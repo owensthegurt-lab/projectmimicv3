@@ -4,12 +4,16 @@ RENDERER
 ====================================
 */
 
+import { Flashlight } from "./flashlight.js";
+
 export class Renderer {
 
     constructor(ctx, canvas) {
 
         this.ctx = ctx;
         this.canvas = canvas;
+
+        this.flashlight = new Flashlight();
 
     }
 
@@ -25,8 +29,8 @@ export class Renderer {
             this.canvas.height
         );
 
-        // Sky Background
-        ctx.fillStyle = "#1b1b1b";
+        // Background
+        ctx.fillStyle = "#151515";
         ctx.fillRect(
             0,
             0,
@@ -34,7 +38,7 @@ export class Renderer {
             this.canvas.height
         );
 
-        // Draw World
+        // World
         world.draw(
             ctx,
             camera.x,
@@ -43,11 +47,18 @@ export class Renderer {
             this.canvas.height
         );
 
-        // Draw Player
+        // Player
         player.draw(
             ctx,
             this.canvas.width,
             this.canvas.height
+        );
+
+        // Flashlight (draw last)
+        this.flashlight.draw(
+            ctx,
+            this.canvas,
+            player
         );
 
     }
