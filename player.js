@@ -4,7 +4,9 @@ PLAYER
 ====================================
 */
 
-class Player {
+import { CollisionSystem } from "./collision.js";
+
+export class Player {
 
     constructor() {
 
@@ -21,31 +23,34 @@ class Player {
         const oldX = this.worldX;
         const oldY = this.worldY;
 
-        // Horizontal Movement
+        // Horizontal
         if (keys["a"]) this.worldX -= this.speed * delta;
         if (keys["d"]) this.worldX += this.speed * delta;
 
         if (CollisionSystem.checkPlayer(this, world)) {
+
             this.worldX = oldX;
+
         }
 
-        // Vertical Movement
+        // Vertical
         if (keys["w"]) this.worldY -= this.speed * delta;
         if (keys["s"]) this.worldY += this.speed * delta;
 
         if (CollisionSystem.checkPlayer(this, world)) {
+
             this.worldY = oldY;
+
         }
 
     }
 
-    draw(ctx, canvasWidth, canvasHeight) {
+    draw(ctx, width, height) {
 
-        const x = canvasWidth / 2;
-        const y = canvasHeight / 2;
+        const x = width / 2;
+        const y = height / 2;
 
-        // Shadow
-        ctx.fillStyle = "rgba(0,0,0,0.35)";
+        ctx.fillStyle = "rgba(0,0,0,.35)";
 
         ctx.beginPath();
 
@@ -61,7 +66,6 @@ class Player {
 
         ctx.fill();
 
-        // Player
         ctx.fillStyle = "white";
 
         ctx.beginPath();
