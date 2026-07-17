@@ -23,24 +23,18 @@ export class Player {
         const oldX = this.worldX;
         const oldY = this.worldY;
 
-        // Horizontal
         if (keys["a"]) this.worldX -= this.speed * delta;
         if (keys["d"]) this.worldX += this.speed * delta;
 
         if (CollisionSystem.checkPlayer(this, world)) {
-
             this.worldX = oldX;
-
         }
 
-        // Vertical
         if (keys["w"]) this.worldY -= this.speed * delta;
         if (keys["s"]) this.worldY += this.speed * delta;
 
         if (CollisionSystem.checkPlayer(this, world)) {
-
             this.worldY = oldY;
-
         }
 
     }
@@ -53,31 +47,13 @@ export class Player {
         ctx.fillStyle = "rgba(0,0,0,.35)";
 
         ctx.beginPath();
-
-        ctx.ellipse(
-            x,
-            y + 12,
-            14,
-            6,
-            0,
-            0,
-            Math.PI * 2
-        );
-
+        ctx.ellipse(x, y + 12, 14, 6, 0, 0, Math.PI * 2);
         ctx.fill();
 
         ctx.fillStyle = "white";
 
         ctx.beginPath();
-
-        ctx.arc(
-            x,
-            y,
-            this.radius,
-            0,
-            Math.PI * 2
-        );
-
+        ctx.arc(x, y, this.radius, 0, Math.PI * 2);
         ctx.fill();
 
     }
