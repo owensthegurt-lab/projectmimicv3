@@ -12,7 +12,6 @@ class Player {
         this.y = window.innerHeight / 2;
 
         this.radius = 15;
-
         this.speed = 300;
 
     }
@@ -28,10 +27,32 @@ class Player {
 
     draw(ctx) {
 
+        // Shadow
+        ctx.fillStyle = "rgba(0,0,0,.3)";
+
+        ctx.beginPath();
+        ctx.ellipse(
+            this.x,
+            this.y + 12,
+            14,
+            6,
+            0,
+            0,
+            Math.PI * 2
+        );
+        ctx.fill();
+
+        // Player
         ctx.fillStyle = "white";
 
         ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.arc(
+            this.x,
+            this.y,
+            this.radius,
+            0,
+            Math.PI * 2
+        );
         ctx.fill();
 
     }
@@ -100,9 +121,40 @@ class Game {
 
     render() {
 
-        this.ctx.fillStyle = "#050505";
-        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        // Background
+        this.ctx.fillStyle = "#1a1a1a";
+        this.ctx.fillRect(
+            0,
+            0,
+            this.canvas.width,
+            this.canvas.height
+        );
 
+        // Grid
+        this.ctx.strokeStyle = "#2d2d2d";
+        this.ctx.lineWidth = 1;
+
+        const grid = 64;
+
+        for (let x = 0; x < this.canvas.width; x += grid) {
+
+            this.ctx.beginPath();
+            this.ctx.moveTo(x, 0);
+            this.ctx.lineTo(x, this.canvas.height);
+            this.ctx.stroke();
+
+        }
+
+        for (let y = 0; y < this.canvas.height; y += grid) {
+
+            this.ctx.beginPath();
+            this.ctx.moveTo(0, y);
+            this.ctx.lineTo(this.canvas.width, y);
+            this.ctx.stroke();
+
+        }
+
+        // Player
         this.player.draw(this.ctx);
 
     }
