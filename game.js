@@ -4,6 +4,9 @@ PROJECT MIMIC
 ====================================
 */
 
+import { World } from "./world.js";
+import { Player } from "./player.js";
+
 class Game {
 
     constructor() {
@@ -52,7 +55,6 @@ class Game {
         this.lastTime = time;
 
         this.update(delta);
-
         this.render();
 
         requestAnimationFrame(this.loop.bind(this));
