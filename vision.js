@@ -7,12 +7,6 @@ VISION SYSTEM
 export class Vision {
 
 
-    /*
-    ====================================
-    CHECK PLAYER VISIBILITY
-    ====================================
-    */
-
     static canSeePlayer(mimic, player) {
 
 
@@ -25,13 +19,11 @@ export class Vision {
 
 
         const dx =
-            player.worldX -
-            mimic.worldX;
+            player.worldX - mimic.worldX;
 
 
         const dy =
-            player.worldY -
-            mimic.worldY;
+            player.worldY - mimic.worldY;
 
 
 
@@ -42,12 +34,11 @@ export class Vision {
 
         /*
         ================================
-        VISION RANGE
+        RANGE
         ================================
         */
 
         const visionRange = 350;
-
 
 
         if (distance > visionRange) {
@@ -70,32 +61,32 @@ export class Vision {
 
 
 
-        let angleDifference =
+        let difference =
             playerAngle - mimic.angle;
 
 
 
-        while (angleDifference > Math.PI) {
+        while (difference > Math.PI) {
 
-            angleDifference -= Math.PI * 2;
-
-        }
-
-
-        while (angleDifference < -Math.PI) {
-
-            angleDifference += Math.PI * 2;
+            difference -= Math.PI * 2;
 
         }
 
 
+        while (difference < -Math.PI) {
 
-        const fieldOfView =
+            difference += Math.PI * 2;
+
+        }
+
+
+
+        const fov =
             Math.PI / 2;
 
 
 
-        if (Math.abs(angleDifference) > fieldOfView) {
+        if (Math.abs(difference) > fov) {
 
             return false;
 
@@ -105,30 +96,36 @@ export class Vision {
 
         /*
         ================================
-        LINE OF SIGHT
+        WALL CHECK
         ================================
         */
 
 
-        if (mimic.world && mimic.world.isBlocked) {
+        if (
+            mimic.world &&
+            mimic.world.collision &&
+            mimic.world.collision.lineBlocked
+        ) {
 
 
-            const blocked =
-                mimic.world.isBlocked(
+            if (
+
+                mimic.world.collision.lineBlocked(
 
                     mimic.worldX,
                     mimic.worldY,
+
                     player.worldX,
                     player.worldY
 
-                );
+                )
 
-
-            if (blocked) {
+            ) {
 
                 return false;
 
             }
+
 
         }
 
@@ -138,7 +135,6 @@ export class Vision {
 
 
     }
-
 
 
 }
