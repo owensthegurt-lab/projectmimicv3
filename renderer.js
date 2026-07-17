@@ -4,66 +4,112 @@ RENDERER
 ====================================
 */
 
-import { Lighting } from "./lighting.js";
-import { UI } from "./ui.js";
-
 export class Renderer {
 
-    constructor(ctx, canvas) {
 
-        this.ctx = ctx;
-        this.canvas = canvas;
+constructor(ctx, canvas) {
 
-        this.lighting = new Lighting();
-        this.ui = new UI();
+    this.ctx = ctx;
 
-    }
+    this.canvas = canvas;
 
-    render(world, player, camera, mimicManager) {
+}
 
-        const ctx = this.ctx;
 
-        /*
-        ====================================
-        CLEAR
-        ====================================
-        */
 
-        ctx.clearRect(
+/*
+====================================
+RENDER
+====================================
+*/
 
-            0,
-            0,
+render(world, player, camera, mimicManager, lootManager) {
 
-            this.canvas.width,
-            this.canvas.height
 
-        );
+    const ctx = this.ctx;
 
-        /*
-        ====================================
-        WORLD
-        ====================================
-        */
 
-        world.draw(
+
+    /*
+    ====================================
+    CLEAR SCREEN
+    ====================================
+    */
+
+
+    ctx.clearRect(
+
+        0,
+
+        0,
+
+        this.canvas.width,
+
+        this.canvas.height
+
+    );
+
+
+
+    /*
+    ====================================
+    WORLD
+    ====================================
+    */
+
+
+    world.draw(
+
+        ctx,
+
+        camera.x,
+
+        camera.y,
+
+        this.canvas.width,
+
+        this.canvas.height,
+
+        player
+
+    );
+
+
+
+    /*
+    ====================================
+    LOOT
+    ====================================
+    */
+
+
+    if(lootManager) {
+
+
+        lootManager.draw(
 
             ctx,
 
             camera.x,
-            camera.y,
 
-            this.canvas.width,
-            this.canvas.height,
-
-            player
+            camera.y
 
         );
 
-        /*
-        ====================================
-        MIMIC
-        ====================================
-        */
+
+    }
+
+
+
+    /*
+    ====================================
+    MIMIC
+    ====================================
+    */
+
+
+    if(mimicManager) {
+
 
         mimicManager.draw(
 
@@ -73,55 +119,144 @@ export class Renderer {
 
         );
 
-        /*
-        ====================================
-        PLAYER
-        ====================================
-        */
-
-        player.draw(
-
-            ctx,
-
-            this.canvas.width,
-            this.canvas.height
-
-        );
-
-        /*
-        ====================================
-        LIGHTING
-        ====================================
-        */
-
-        this.lighting.draw(
-
-            ctx,
-
-            this.canvas,
-
-            player
-
-        );
-
-        /*
-        ====================================
-        UI
-        ====================================
-        */
-
-        this.ui.draw(
-
-            ctx,
-
-            this.canvas,
-
-            player,
-
-            world
-
-        );
 
     }
+
+
+
+    /*
+    ====================================
+    PLAYER
+    ====================================
+    */
+
+
+    player.draw(
+
+        ctx,
+
+        this.canvas.width,
+
+        this.canvas.height
+
+    );
+
+
+
+    /*
+    ====================================
+    UI
+    ====================================
+    */
+
+
+    this.drawInventory(
+
+        player
+
+    );
+
+
+}
+
+
+
+/*
+====================================
+INVENTORY UI
+====================================
+*/
+
+drawInventory(player) {
+
+
+    const ctx = this.ctx;
+
+
+    ctx.fillStyle =
+        "rgba(0,0,0,.5)";
+
+
+    ctx.fillRect(
+
+        15,
+
+        15,
+
+        180,
+
+        100
+
+    );
+
+
+
+    ctx.fillStyle =
+        "#FFFFFF";
+
+
+    ctx.font =
+        "14px Arial";
+
+
+    ctx.fillText(
+
+        "Inventory",
+
+        25,
+
+        40
+
+    );
+
+
+
+    if(player.inventory.length === 0) {
+
+
+        ctx.fillText(
+
+            "Empty",
+
+            25,
+
+            65
+
+        );
+
+
+        return;
+
+    }
+
+
+
+    let y = 65;
+
+
+
+    for(const item of player.inventory) {
+
+
+        ctx.fillText(
+
+            "- " + item,
+
+            25,
+
+            y
+
+        );
+
+
+        y += 18;
+
+
+    }
+
+
+}
+
+
 
 }
