@@ -8,94 +8,125 @@ export class World {
 
     constructor() {
 
-        this.tileSize = 64;
-
         this.width = 5000;
         this.height = 5000;
 
-        this.buildings = [
+        this.roads = [
 
-            // Player House
             {
-                x: 1400,
-                y: 1400,
-                width: 220,
-                height: 180,
-                color: "#8B5A2B"
+                x: 0,
+                y: 1450,
+                width: 5000,
+                height: 120
             },
 
-            // Shop
             {
-                x: 1000,
-                y: 900,
+                x: 1450,
+                y: 0,
+                width: 120,
+                height: 5000
+            }
+
+        ];
+
+        this.buildings = [
+
+            {
+                name: "Player House",
+                x: 1200,
+                y: 1200,
+                width: 220,
+                height: 180,
+                color: "#7A5230"
+            },
+
+            {
+                name: "Store",
+                x: 1800,
+                y: 1100,
                 width: 200,
                 height: 200,
                 color: "#666666"
             },
 
-            // Police Station
             {
-                x: 2200,
-                y: 1200,
+                name: "Police",
+                x: 2100,
+                y: 1700,
                 width: 220,
                 height: 180,
-                color: "#777777"
+                color: "#5A5A5A"
             },
 
-            // Hospital
             {
-                x: 1800,
-                y: 2200,
+                name: "Hospital",
+                x: 900,
+                y: 1900,
                 width: 240,
                 height: 200,
-                color: "#888888"
+                color: "#808080"
             }
 
         ];
+
+        this.trees = [];
+
+        for (let i = 0; i < 120; i++) {
+
+            this.trees.push({
+
+                x: Math.random() * this.width,
+                y: Math.random() * this.height,
+                radius: 20 + Math.random() * 10
+
+            });
+
+        }
 
     }
 
     draw(ctx, cameraX, cameraY, screenWidth, screenHeight) {
 
         // Grass
-        ctx.fillStyle = "#355E3B";
+        ctx.fillStyle = "#315C35";
         ctx.fillRect(0, 0, screenWidth, screenHeight);
 
         // Roads
-        ctx.fillStyle = "#4A4A4A";
+        ctx.fillStyle = "#474747";
 
-        // Horizontal Road
-        ctx.fillRect(
-            -cameraX,
-            1500 - cameraY,
-            this.width,
-            120
-        );
+        for (const road of this.roads) {
 
-        // Vertical Road
-        ctx.fillRect(
-            1500 - cameraX,
-            -cameraY,
-            120,
-            this.height
-        );
+            ctx.fillRect(
+
+                road.x - cameraX,
+                road.y - cameraY,
+
+                road.width,
+                road.height
+
+            );
+
+        }
 
         // Trees
-        ctx.fillStyle = "#1F6B2E";
+        for (const tree of this.trees) {
 
-        for (let i = 0; i < 80; i++) {
-
-            const x = (i * 170) % this.width;
-            const y = ((i * 320) % this.height);
+            ctx.fillStyle = "#1D5E20";
 
             ctx.beginPath();
+
             ctx.arc(
-                x - cameraX,
-                y - cameraY,
-                24,
+
+                tree.x - cameraX,
+                tree.y - cameraY,
+
+                tree.radius,
+
                 0,
                 Math.PI * 2
+
             );
+
             ctx.fill();
 
         }
@@ -106,20 +137,26 @@ export class World {
             ctx.fillStyle = building.color;
 
             ctx.fillRect(
+
                 building.x - cameraX,
                 building.y - cameraY,
+
                 building.width,
                 building.height
+
             );
 
             ctx.strokeStyle = "#222";
             ctx.lineWidth = 4;
 
             ctx.strokeRect(
+
                 building.x - cameraX,
                 building.y - cameraY,
+
                 building.width,
                 building.height
+
             );
 
         }
