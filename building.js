@@ -23,16 +23,19 @@ export class Building {
 
         this.enterable = true;
 
+        // Door
         this.door = new Door(
             this.x + this.width / 2 - 12,
             this.y + this.height - 30
         );
 
+        // Interior
         this.interior = new Interior(
             this.width,
             this.height
         );
 
+        // Example Furniture
         this.interior.addFurniture(
             30,
             30,
@@ -67,7 +70,7 @@ export class Building {
 
     draw(ctx, cameraX, cameraY, player) {
 
-        // Interior always exists
+        // Always draw interior first
         this.interior.draw(
             ctx,
             cameraX,
@@ -76,59 +79,52 @@ export class Building {
             this.y
         );
 
-        // Hide roof if player is inside
-        if (this.playerInside(player)) {
+        // Hide roof when player is inside
+        if (!this.playerInside(player)) {
 
-            this.door.draw(
-                ctx,
-                cameraX,
-                cameraY
+            // Building
+            ctx.fillStyle = this.color;
+
+            ctx.fillRect(
+
+                this.x - cameraX,
+                this.y - cameraY,
+
+                this.width,
+                this.height
+
             );
 
-            return;
+            // Outline
+            ctx.strokeStyle = "#222";
+            ctx.lineWidth = 4;
+
+            ctx.strokeRect(
+
+                this.x - cameraX,
+                this.y - cameraY,
+
+                this.width,
+                this.height
+
+            );
+
+            // Roof Highlight
+            ctx.fillStyle = "rgba(255,255,255,.08)";
+
+            ctx.fillRect(
+
+                this.x - cameraX,
+                this.y - cameraY,
+
+                this.width,
+                12
+
+            );
 
         }
 
-        // Roof
-        ctx.fillStyle = this.color;
-
-        ctx.fillRect(
-
-            this.x - cameraX,
-            this.y - cameraY,
-
-            this.width,
-            this.height
-
-        );
-
-        // Outline
-        ctx.strokeStyle = "#222";
-        ctx.lineWidth = 4;
-
-        ctx.strokeRect(
-
-            this.x - cameraX,
-            this.y - cameraY,
-
-            this.width,
-            this.height
-
-        );
-
-        // Highlight
-        ctx.fillStyle = "rgba(255,255,255,.08)";
-
-        ctx.fillRect(
-
-            this.x - cameraX,
-            this.y - cameraY,
-
-            this.width,
-            12
-
-        );
-
+        // Door always visible
         this.door.draw(
             ctx,
             cameraX,
