@@ -23,18 +23,30 @@ export class Building {
 
         this.enterable = true;
 
-        // Door
+        /*
+        ====================================
+        DOOR
+        ====================================
+        */
 
         this.door = new Door(
+
             this.x + this.width / 2 - 12,
             this.y + this.height - 30
+
         );
 
-        // Interior
+        /*
+        ====================================
+        INTERIOR
+        ====================================
+        */
 
         this.interior = new Interior(
+
             this.width,
             this.height
+
         );
 
         /*
@@ -43,7 +55,7 @@ export class Building {
         ====================================
         */
 
-        // Vertical Divider
+        // Vertical Wall
 
         this.interior.addWall(
 
@@ -55,7 +67,7 @@ export class Building {
 
         );
 
-        // Horizontal Divider
+        // Horizontal Wall
 
         this.interior.addWall(
 
@@ -73,35 +85,31 @@ export class Building {
         ====================================
         */
 
-        // Couch
+        // Living Room
 
         this.interior.addFurniture(
 
-            40,
-            40,
+            35,
+            35,
 
-            90,
+            95,
             35,
 
             "#5B3A29"
 
         );
 
-        // Coffee Table
-
         this.interior.addFurniture(
 
-            70,
+            55,
             95,
 
-            50,
+            55,
             35,
 
             "#7B5A3B"
 
         );
-
-        // TV
 
         this.interior.addFurniture(
 
@@ -115,25 +123,23 @@ export class Building {
 
         );
 
-        // Dining Table
+        // Kitchen
 
         this.interior.addFurniture(
 
             270,
             40,
 
-            80,
+            90,
             55,
 
             "#8B6A45"
 
         );
 
-        // Kitchen Counter
-
         this.interior.addFurniture(
 
-            240,
+            250,
             130,
 
             120,
@@ -143,12 +149,12 @@ export class Building {
 
         );
 
-        // Bed
+        // Bedroom
 
         this.interior.addFurniture(
 
-            40,
-            240,
+            35,
+            220,
 
             120,
             70,
@@ -157,33 +163,45 @@ export class Building {
 
         );
 
-        // Wardrobe
-
         this.interior.addFurniture(
 
-            180,
-            235,
+            170,
+            215,
 
             30,
-            80,
+            90,
 
             "#4E342E"
 
         );
 
-        // Desk
+        // Office
 
         this.interior.addFurniture(
 
-            270,
-            240,
+            285,
+            220,
 
-            90,
+            75,
             45,
 
             "#795548"
 
         );
+
+        /*
+        ====================================
+        ENTRY WALKWAY
+        ====================================
+
+        The area directly inside the front
+        door is intentionally left EMPTY.
+
+        This creates a hallway from the
+        front door into the house so the
+        player never gets trapped.
+
+        */
 
     }
 
@@ -208,6 +226,7 @@ export class Building {
         this.interior.draw(
 
             ctx,
+
             cameraX,
             cameraY,
 
@@ -245,6 +264,8 @@ export class Building {
 
             );
 
+            // Roof Highlight
+
             ctx.fillStyle = "rgba(255,255,255,.08)";
 
             ctx.fillRect(
@@ -264,6 +285,7 @@ export class Building {
         this.door.draw(
 
             ctx,
+
             cameraX,
             cameraY
 
