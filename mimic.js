@@ -4,17 +4,25 @@ MIMIC
 ====================================
 */
 
+import { Vision } from "./vision.js";
+
 export class Mimic {
 
     constructor(x = 2500, y = 2500) {
+
+        /*
+        ====================================
+        POSITION
+        ====================================
+        */
 
         this.worldX = x;
         this.worldY = y;
 
         /*
-        ==========================
+        ====================================
         MOVEMENT
-        ==========================
+        ====================================
         */
 
         this.speed = 95;
@@ -26,9 +34,9 @@ export class Mimic {
         this.targetY = y;
 
         /*
-        ==========================
+        ====================================
         AI
-        ==========================
+        ====================================
         */
 
         this.state = "idle";
@@ -36,17 +44,28 @@ export class Mimic {
         this.waitTimer = 3;
 
         /*
-        ==========================
+        ====================================
+        VISION
+        ====================================
+        */
+
+        this.playerSeen = false;
+
+        this.lastKnownX = x;
+        this.lastKnownY = y;
+
+        /*
+        ====================================
         ANIMATION
-        ==========================
+        ====================================
         */
 
         this.walkCycle = 0;
 
         /*
-        ==========================
+        ====================================
         APPEARANCE
-        ==========================
+        ====================================
         */
 
         this.realForm = {
@@ -57,7 +76,7 @@ export class Mimic {
             headRadius: 10,
 
             torsoWidth: 18,
-            torsoHeight: 48,
+            torsoHeight: 52,
 
             armLength: 56,
             legLength: 52
@@ -76,9 +95,24 @@ export class Mimic {
     ====================================
     */
 
-    update(delta, world) {
+    update(delta, world, player) {
 
         this.walkCycle += delta * 5;
+
+        /*
+        ====================================
+        CAN SEE PLAYER?
+        ====================================
+        */
+
+        if (Vision.canSeePlayer(this, player)) {
+
+            this.playerSeen = true;
+
+            this.lastKnownX = player.worldX;
+            this.lastKnownY = player.worldY;
+
+        }
 
         switch (this.state) {
 
@@ -112,6 +146,13 @@ export class Mimic {
 
             case "roam":
 
+                if (this.playerSeen) {
+
+                    this.targetX = this.lastKnownX;
+                    this.targetY = this.lastKnownY;
+
+                }
+
                 this.move(delta);
 
                 break;
@@ -122,21 +163,17 @@ export class Mimic {
 
     /*
     ====================================
-    PATROL
+    CHOOSE DESTINATION
     ====================================
     */
 
     chooseDestination(world) {
 
         const point = world.patrolPoints[
-
             Math.floor(
-
                 Math.random() *
                 world.patrolPoints.length
-
             )
-
         ];
 
         this.targetX = point.x;
@@ -155,9 +192,15 @@ export class Mimic {
         const dx = this.targetX - this.worldX;
         const dy = this.targetY - this.worldY;
 
-        const dist = Math.hypot(dx, dy);
+        const distance = Math.hypot(dx, dy);
 
-        if (dist < 8) {
+        if (distance < 8) {
+
+            if (this.playerSeen) {
+
+                this.playerSeen = false;
+
+            }
 
             if (Math.random() < 0.35) {
 
@@ -179,8 +222,11 @@ export class Mimic {
 
         let diff = this.targetAngle - this.angle;
 
-        while (diff > Math.PI) diff -= Math.PI * 2;
-        while (diff < -Math.PI) diff += Math.PI * 2;
+        while (diff > Math.PI)
+            diff -= Math.PI * 2;
+
+        while (diff < -Math.PI)
+            diff += Math.PI * 2;
 
         this.angle += diff * 5 * delta;
 
@@ -218,33 +264,15 @@ export class Mimic {
         ctx.translate(x, y);
         ctx.rotate(this.angle + Math.PI / 2);
 
-        /*
-        Shadow
-        */
+        // Shadow
 
         ctx.fillStyle = "rgba(0,0,0,.45)";
 
         ctx.beginPath();
-
-        ctx.ellipse(
-
-            0,
-            44,
-
-            16,
-            6,
-
-            0,
-            0,
-            Math.PI * 2
-
-        );
-
+        ctx.ellipse(0, 44, 16, 6, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        /*
-        Arms
-        */
+        // Arms
 
         ctx.strokeStyle = "#090909";
         ctx.lineWidth = 6;
@@ -259,47 +287,20 @@ export class Mimic {
 
         ctx.stroke();
 
-        /*
-        Torso
-        */
+        // Torso
 
         ctx.fillStyle = "#090909";
+        ctx.fillRect(-9, -20, 18, 52);
 
-        ctx.fillRect(
-
-            -9,
-            -20,
-
-            18,
-            52
-
-        );
-
-        /*
-        Head
-        */
+        // Head
 
         ctx.beginPath();
-
-        ctx.arc(
-
-            0,
-            -32,
-
-            10,
-
-            0,
-            Math.PI * 2
-
-        );
-
+        ctx.arc(0, -32, 10, 0, Math.PI * 2);
         ctx.fill();
 
-        /*
-        Eyes
-        */
+        // Eyes
 
-        ctx.fillStyle = "#F8F8F8";
+        ctx.fillStyle = "#FFFFFF";
 
         ctx.beginPath();
         ctx.arc(-3, -34, 1.5, 0, Math.PI * 2);
@@ -309,9 +310,7 @@ export class Mimic {
         ctx.arc(3, -34, 1.5, 0, Math.PI * 2);
         ctx.fill();
 
-        /*
-        Legs
-        */
+        // Legs
 
         ctx.strokeStyle = "#090909";
         ctx.lineWidth = 6;
@@ -332,7 +331,7 @@ export class Mimic {
 
     /*
     ====================================
-    FUTURE DISGUISE SYSTEM
+    FUTURE DISGUISE
     ====================================
     */
 
