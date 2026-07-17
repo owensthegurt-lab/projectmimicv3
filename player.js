@@ -13,10 +13,9 @@ export class Player {
         this.worldX = 1000;
         this.worldY = 1000;
 
+        this.radius = 16;
         this.speed = 300;
-        this.radius = 15;
 
-        // Mouse Facing
         this.angle = 0;
 
     }
@@ -26,25 +25,10 @@ export class Player {
         const oldX = this.worldX;
         const oldY = this.worldY;
 
-        // Movement
-
-        if (input.down("w")) {
-            this.worldY -= this.speed * delta;
-        }
-
-        if (input.down("s")) {
-            this.worldY += this.speed * delta;
-        }
-
-        if (input.down("a")) {
-            this.worldX -= this.speed * delta;
-        }
-
-        if (input.down("d")) {
-            this.worldX += this.speed * delta;
-        }
-
-        // Collision
+        if (input.down("w")) this.worldY -= this.speed * delta;
+        if (input.down("s")) this.worldY += this.speed * delta;
+        if (input.down("a")) this.worldX -= this.speed * delta;
+        if (input.down("d")) this.worldX += this.speed * delta;
 
         if (CollisionSystem.playerCollision(this, world)) {
 
@@ -53,16 +37,12 @@ export class Player {
 
         }
 
-        // Face Mouse
-
-        const centerX = window.innerWidth / 2;
-        const centerY = window.innerHeight / 2;
+        const cx = window.innerWidth / 2;
+        const cy = window.innerHeight / 2;
 
         this.angle = Math.atan2(
-
-            mouse.y - centerY,
-            mouse.x - centerX
-
+            mouse.y - cy,
+            mouse.x - cx
         );
 
     }
@@ -72,47 +52,39 @@ export class Player {
         const x = width / 2;
         const y = height / 2;
 
-        // Shadow
-
-        ctx.fillStyle = "rgba(0,0,0,.35)";
-        ctx.beginPath();
-        ctx.ellipse(x, y + 14, 12, 6, 0, 0, Math.PI * 2);
-        ctx.fill();
-
         ctx.save();
 
         ctx.translate(x, y);
         ctx.rotate(this.angle);
 
+        // Shadow
+        ctx.fillStyle = "rgba(0,0,0,.35)";
+        ctx.beginPath();
+        ctx.ellipse(0, 18, 14, 6, 0, 0, Math.PI * 2);
+        ctx.fill();
+
         // Legs
-
-        ctx.fillStyle = "#1f1f1f";
-
+        ctx.fillStyle = "#1d1d1d";
         ctx.fillRect(-8, 10, 5, 10);
         ctx.fillRect(3, 10, 5, 10);
 
         // Body
-
-        ctx.fillStyle = "#2c7be5";
-
-        ctx.fillRect(-10, -8, 20, 22);
+        ctx.fillStyle = "#2B84FF";
+        ctx.fillRect(-11, -8, 22, 22);
 
         // Head
-
-        ctx.fillStyle = "#f2d2b6";
-
+        ctx.fillStyle = "#F3D4B5";
         ctx.beginPath();
-        ctx.arc(0, -16, 8, 0, Math.PI * 2);
+        ctx.arc(0, -17, 8, 0, Math.PI * 2);
         ctx.fill();
 
         // Flashlight
-
-        ctx.strokeStyle = "#bdbdbd";
-        ctx.lineWidth = 4;
+        ctx.strokeStyle = "#D8D8D8";
+        ctx.lineWidth = 3;
 
         ctx.beginPath();
-        ctx.moveTo(8, 0);
-        ctx.lineTo(22, 0);
+        ctx.moveTo(10, 0);
+        ctx.lineTo(24, 0);
         ctx.stroke();
 
         ctx.restore();
