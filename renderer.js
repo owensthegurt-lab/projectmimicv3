@@ -13,12 +13,21 @@ export class Renderer {
 
     }
 
-    render(world, player, camera, flashlight) {
+    render(world, player, camera) {
 
         const ctx = this.ctx;
 
         // Clear Screen
         ctx.clearRect(
+            0,
+            0,
+            this.canvas.width,
+            this.canvas.height
+        );
+
+        // Sky Background
+        ctx.fillStyle = "#1b1b1b";
+        ctx.fillRect(
             0,
             0,
             this.canvas.width,
@@ -36,13 +45,6 @@ export class Renderer {
 
         // Draw Player
         player.draw(
-            ctx,
-            this.canvas.width,
-            this.canvas.height
-        );
-
-        // Draw Flashlight
-        flashlight.draw(
             ctx,
             this.canvas.width,
             this.canvas.height
