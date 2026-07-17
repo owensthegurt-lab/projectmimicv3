@@ -1,45 +1,42 @@
 /*
 ====================================
-COLLISION SYSTEM
+COLLISION
 ====================================
 */
 
 export class CollisionSystem {
 
-    static circleRect(circleX, circleY, radius, rect) {
-
-        const closestX = Math.max(
-            rect.x,
-            Math.min(circleX, rect.x + rect.width)
-        );
-
-        const closestY = Math.max(
-            rect.y,
-            Math.min(circleY, rect.y + rect.height)
-        );
-
-        const dx = circleX - closestX;
-        const dy = circleY - closestY;
-
-        return (dx * dx + dy * dy) < (radius * radius);
-
-    }
-
     static playerCollision(player, world) {
 
         for (const building of world.buildings) {
 
+            // If the door is open, allow entering through the doorway
+            if (building.door.isOpen) {
+
+                const door = building.door;
+
+                const inDoorway =
+
+                    player.worldX > door.x &&
+                    player.worldX < door.x + door.width &&
+                    player.worldY > building.y + building.height - 45;
+
+                if (inDoorway) {
+
+                    continue;
+
+                }
+
+            }
+
+            const padding = player.radius;
+
             if (
 
-                CollisionSystem.circleRect(
-
-                    player.worldX,
-                    player.worldY,
-                    player.radius,
-
-                    building
-
-                )
+                player.worldX + padding > building.x &&
+                player.worldX - padding < building.x + building.width &&
+                player.worldY + padding > building.y &&
+                player.worldY - padding < building.y + building.height
 
             ) {
 
