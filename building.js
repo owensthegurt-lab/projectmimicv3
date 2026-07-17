@@ -41,9 +41,13 @@ constructor(name, x, y, width, height, color) {
 
     this.door = new Door(
 
-        this.x + this.width / 2 - 12,
+        this.x + this.width / 2 - 25,
 
-        this.y + this.height - 30
+        this.y + this.height - 45,
+
+        50,
+
+        45
 
     );
 
@@ -86,7 +90,6 @@ constructor(name, x, y, width, height, color) {
     );
 
 
-
     // Horizontal wall
 
     this.interior.addWall(
@@ -105,15 +108,13 @@ constructor(name, x, y, width, height, color) {
     ====================================
     LOOT SPACE
     ====================================
-
-    Furniture removed.
-
-    These empty areas are reserved
-    for loot spawning later.
-
     */
 
+    // Loot will be added here later
+
 }
+
+
 
 
 
@@ -142,6 +143,7 @@ playerInside(player) {
 draw(ctx, cameraX, cameraY, player) {
 
 
+
     /*
     ====================================
     INTERIOR
@@ -162,6 +164,7 @@ draw(ctx, cameraX, cameraY, player) {
         this.y
 
     );
+
 
 
 
@@ -214,10 +217,8 @@ draw(ctx, cameraX, cameraY, player) {
 
 
 
-        // Roof highlight
-
-
-        ctx.fillStyle = "rgba(255,255,255,.08)";
+        ctx.fillStyle =
+            "rgba(255,255,255,.08)";
 
 
 
