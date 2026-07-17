@@ -1,119 +1,60 @@
 /*
 ====================================
-PLAYER
+FLASHLIGHT
 ====================================
 */
 
-import { CollisionSystem } from "./collision.js";
-
-export class Player {
+export class Flashlight {
 
     constructor() {
 
-        this.worldX = 1000;
-        this.worldY = 1000;
-
-        this.speed = 300;
-        this.radius = 15;
-
-        // Mouse Facing
-        this.angle = 0;
+        this.radius = 220;
 
     }
 
-    update(delta, input, mouse, world) {
-
-        const oldX = this.worldX;
-        const oldY = this.worldY;
-
-        // Movement
-
-        if (input.down("w")) {
-            this.worldY -= this.speed * delta;
-        }
-
-        if (input.down("s")) {
-            this.worldY += this.speed * delta;
-        }
-
-        if (input.down("a")) {
-            this.worldX -= this.speed * delta;
-        }
-
-        if (input.down("d")) {
-            this.worldX += this.speed * delta;
-        }
-
-        // Collision
-
-        if (CollisionSystem.playerCollision(this, world)) {
-
-            this.worldX = oldX;
-            this.worldY = oldY;
-
-        }
-
-        // Face Mouse
-
-        const centerX = window.innerWidth / 2;
-        const centerY = window.innerHeight / 2;
-
-        this.angle = Math.atan2(
-
-            mouse.y - centerY,
-            mouse.x - centerX
-
-        );
-
-    }
-
-    draw(ctx, width, height) {
-
-        const x = width / 2;
-        const y = height / 2;
-
-        // Shadow
-
-        ctx.fillStyle = "rgba(0,0,0,.35)";
-        ctx.beginPath();
-        ctx.ellipse(x, y + 14, 12, 6, 0, 0, Math.PI * 2);
-        ctx.fill();
+    draw(ctx, canvas, player) {
 
         ctx.save();
 
-        ctx.translate(x, y);
-        ctx.rotate(this.angle);
+        // Darkness
+        ctx.fillStyle = "rgba(0,0,0,0.90)";
+        ctx.fillRect(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
 
-        // Legs
+        // Light
+        ctx.globalCompositeOperation = "destination-out";
 
-        ctx.fillStyle = "#1f1f1f";
+        const x = canvas.width / 2;
+        const y = canvas.height / 2;
 
-        ctx.fillRect(-8, 10, 5, 10);
-        ctx.fillRect(3, 10, 5, 10);
+        const gradient = ctx.createRadialGradient(
+            x,
+            y,
+            0,
+            x,
+            y,
+            this.radius
+        );
 
-        // Body
+        gradient.addColorStop(0, "rgba(0,0,0,1)");
+        gradient.addColorStop(0.6, "rgba(0,0,0,.8)");
+        gradient.addColorStop(1, "rgba(0,0,0,0)");
 
-        ctx.fillStyle = "#2c7be5";
-
-        ctx.fillRect(-10, -8, 20, 22);
-
-        // Head
-
-        ctx.fillStyle = "#f2d2b6";
+        ctx.fillStyle = gradient;
 
         ctx.beginPath();
-        ctx.arc(0, -16, 8, 0, Math.PI * 2);
+        ctx.arc(
+            x,
+            y,
+            this.radius,
+            0,
+            Math.PI * 2
+        );
         ctx.fill();
-
-        // Flashlight
-
-        ctx.strokeStyle = "#bdbdbd";
-        ctx.lineWidth = 4;
-
-        ctx.beginPath();
-        ctx.moveTo(8, 0);
-        ctx.lineTo(22, 0);
-        ctx.stroke();
 
         ctx.restore();
 
