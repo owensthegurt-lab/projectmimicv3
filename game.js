@@ -1,7 +1,7 @@
 /*
-========================================
+====================================
 PROJECT MIMIC
-========================================
+====================================
 */
 
 class Game {
@@ -15,11 +15,9 @@ class Game {
 
         window.addEventListener("resize", () => this.resize());
 
-        this.running = true;
-
         this.lastTime = performance.now();
 
-        requestAnimationFrame((time) => this.loop(time));
+        requestAnimationFrame(this.loop.bind(this));
 
     }
 
@@ -40,7 +38,7 @@ class Game {
 
         this.render();
 
-        requestAnimationFrame((t) => this.loop(t));
+        requestAnimationFrame(this.loop.bind(this));
 
     }
 
@@ -59,8 +57,7 @@ class Game {
         );
 
         this.ctx.fillStyle = "white";
-
-        this.ctx.font = "26px Arial";
+        this.ctx.font = "28px Arial";
 
         this.ctx.fillText(
             "PROJECT MIMIC",
