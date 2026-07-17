@@ -4,6 +4,8 @@ WORLD
 ====================================
 */
 
+import { Building } from "./building.js";
+
 export class World {
 
     constructor() {
@@ -29,46 +31,48 @@ export class World {
 
         ];
 
+        // Buildings
         this.buildings = [
 
-            {
-                name: "Player House",
-                x: 1200,
-                y: 1200,
-                width: 220,
-                height: 180,
-                color: "#7A5230"
-            },
+            new Building(
+                "Player House",
+                1200,
+                1200,
+                220,
+                180,
+                "#7A5230"
+            ),
 
-            {
-                name: "Store",
-                x: 1800,
-                y: 1100,
-                width: 200,
-                height: 200,
-                color: "#666666"
-            },
+            new Building(
+                "Store",
+                1800,
+                1100,
+                200,
+                200,
+                "#666666"
+            ),
 
-            {
-                name: "Police",
-                x: 2100,
-                y: 1700,
-                width: 220,
-                height: 180,
-                color: "#5A5A5A"
-            },
+            new Building(
+                "Police Station",
+                2100,
+                1700,
+                220,
+                180,
+                "#5A5A5A"
+            ),
 
-            {
-                name: "Hospital",
-                x: 900,
-                y: 1900,
-                width: 240,
-                height: 200,
-                color: "#808080"
-            }
+            new Building(
+                "Hospital",
+                900,
+                1900,
+                240,
+                200,
+                "#808080"
+            )
 
         ];
 
+        // Trees
         this.trees = [];
 
         for (let i = 0; i < 120; i++) {
@@ -77,6 +81,7 @@ export class World {
 
                 x: Math.random() * this.width,
                 y: Math.random() * this.height,
+
                 radius: 20 + Math.random() * 10
 
             });
@@ -89,7 +94,13 @@ export class World {
 
         // Grass
         ctx.fillStyle = "#315C35";
-        ctx.fillRect(0, 0, screenWidth, screenHeight);
+
+        ctx.fillRect(
+            0,
+            0,
+            screenWidth,
+            screenHeight
+        );
 
         // Roads
         ctx.fillStyle = "#474747";
@@ -134,29 +145,10 @@ export class World {
         // Buildings
         for (const building of this.buildings) {
 
-            ctx.fillStyle = building.color;
-
-            ctx.fillRect(
-
-                building.x - cameraX,
-                building.y - cameraY,
-
-                building.width,
-                building.height
-
-            );
-
-            ctx.strokeStyle = "#222";
-            ctx.lineWidth = 4;
-
-            ctx.strokeRect(
-
-                building.x - cameraX,
-                building.y - cameraY,
-
-                building.width,
-                building.height
-
+            building.draw(
+                ctx,
+                cameraX,
+                cameraY
             );
 
         }
