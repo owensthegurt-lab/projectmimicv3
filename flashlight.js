@@ -8,15 +8,19 @@ export class Flashlight {
 
     constructor() {
 
-        this.radius = 220;
+        this.radius = 260;
 
     }
 
-    draw(ctx, canvas, player) {
+    draw(ctx, canvas) {
 
+        const x = canvas.width / 2;
+        const y = canvas.height / 2;
+
+        // Dark overlay
         ctx.save();
 
-        ctx.fillStyle = "rgba(0,0,0,0.90)";
+        ctx.fillStyle = "rgba(0,0,0,0.82)";
         ctx.fillRect(
             0,
             0,
@@ -24,10 +28,8 @@ export class Flashlight {
             canvas.height
         );
 
+        // Punch a hole in the darkness
         ctx.globalCompositeOperation = "destination-out";
-
-        const x = canvas.width / 2;
-        const y = canvas.height / 2;
 
         const gradient = ctx.createRadialGradient(
             x,
@@ -39,7 +41,7 @@ export class Flashlight {
         );
 
         gradient.addColorStop(0, "rgba(0,0,0,1)");
-        gradient.addColorStop(0.6, "rgba(0,0,0,.8)");
+        gradient.addColorStop(0.55, "rgba(0,0,0,0.75)");
         gradient.addColorStop(1, "rgba(0,0,0,0)");
 
         ctx.fillStyle = gradient;
