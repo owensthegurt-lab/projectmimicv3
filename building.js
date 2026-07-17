@@ -5,6 +5,7 @@ BUILDING
 */
 
 import { Door } from "./door.js";
+import { Interior } from "./interior.js";
 
 export class Building {
 
@@ -27,11 +28,68 @@ export class Building {
             this.y + this.height - 30
         );
 
+        this.interior = new Interior(
+            this.width,
+            this.height
+        );
+
+        this.interior.addFurniture(
+            30,
+            30,
+            60,
+            40,
+            "#5B3A29"
+        );
+
+        this.interior.addFurniture(
+            120,
+            80,
+            40,
+            80,
+            "#3F4A5A"
+        );
+
     }
 
-    draw(ctx, cameraX, cameraY) {
+    playerInside(player) {
 
-        // Building
+        return (
+
+            player.worldX > this.x &&
+            player.worldX < this.x + this.width &&
+
+            player.worldY > this.y &&
+            player.worldY < this.y + this.height
+
+        );
+
+    }
+
+    draw(ctx, cameraX, cameraY, player) {
+
+        // Interior always exists
+        this.interior.draw(
+            ctx,
+            cameraX,
+            cameraY,
+            this.x,
+            this.y
+        );
+
+        // Hide roof if player is inside
+        if (this.playerInside(player)) {
+
+            this.door.draw(
+                ctx,
+                cameraX,
+                cameraY
+            );
+
+            return;
+
+        }
+
+        // Roof
         ctx.fillStyle = this.color;
 
         ctx.fillRect(
@@ -58,8 +116,8 @@ export class Building {
 
         );
 
-        // Roof Highlight
-        ctx.fillStyle = "rgba(255,255,255,0.08)";
+        // Highlight
+        ctx.fillStyle = "rgba(255,255,255,.08)";
 
         ctx.fillRect(
 
@@ -71,7 +129,6 @@ export class Building {
 
         );
 
-        // Door
         this.door.draw(
             ctx,
             cameraX,
