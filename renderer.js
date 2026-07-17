@@ -4,7 +4,7 @@ RENDERER
 ====================================
 */
 
-import { Flashlight } from "./flashlight.js";
+import { Lighting } from "./lighting.js";
 
 export class Renderer {
 
@@ -13,7 +13,7 @@ export class Renderer {
         this.ctx = ctx;
         this.canvas = canvas;
 
-        this.flashlight = new Flashlight();
+        this.lighting = new Lighting();
 
     }
 
@@ -45,10 +45,11 @@ export class Renderer {
             this.canvas.height
         );
 
-        // Draw Flashlight LAST
-        this.flashlight.draw(
+        // Draw Lighting LAST
+        this.lighting.draw(
             ctx,
-            this.canvas
+            this.canvas,
+            player
         );
 
     }
