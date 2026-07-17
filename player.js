@@ -8,56 +8,52 @@ class Player {
 
     constructor() {
 
-        this.x = 400;
-        this.y = 300;
+        this.worldX = 1600;
+        this.worldY = 1600;
 
         this.radius = 15;
-
         this.speed = 300;
 
     }
 
     update(delta, keys) {
 
-        if (keys["w"]) this.y -= this.speed * delta;
-        if (keys["s"]) this.y += this.speed * delta;
-        if (keys["a"]) this.x -= this.speed * delta;
-        if (keys["d"]) this.x += this.speed * delta;
+        if (keys["w"]) this.worldY -= this.speed * delta;
+        if (keys["s"]) this.worldY += this.speed * delta;
+        if (keys["a"]) this.worldX -= this.speed * delta;
+        if (keys["d"]) this.worldX += this.speed * delta;
 
     }
 
-    draw(ctx) {
+    draw(ctx, canvasWidth, canvasHeight) {
+
+        const x = canvasWidth / 2;
+        const y = canvasHeight / 2;
 
         // Shadow
         ctx.fillStyle = "rgba(0,0,0,.35)";
-
         ctx.beginPath();
-
         ctx.ellipse(
-            this.x,
-            this.y + 12,
+            x,
+            y + 12,
             14,
             6,
             0,
             0,
             Math.PI * 2
         );
-
         ctx.fill();
 
         // Player
         ctx.fillStyle = "white";
-
         ctx.beginPath();
-
         ctx.arc(
-            this.x,
-            this.y,
+            x,
+            y,
             this.radius,
             0,
             Math.PI * 2
         );
-
         ctx.fill();
 
     }
