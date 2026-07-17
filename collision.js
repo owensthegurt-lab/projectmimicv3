@@ -13,12 +13,10 @@ export class CollisionSystem {
             const padding = player.radius;
 
             if (
-
                 player.worldX + padding > building.x &&
                 player.worldX - padding < building.x + building.width &&
                 player.worldY + padding > building.y &&
                 player.worldY - padding < building.y + building.height
-
             ) {
 
                 return true;
