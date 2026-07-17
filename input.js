@@ -9,16 +9,27 @@ export class Input {
     constructor() {
 
         this.keys = {};
+        this.justPressed = {};
 
-        window.addEventListener("keydown", (e) => {
+        window.addEventListener("keydown", e => {
 
-            this.keys[e.key.toLowerCase()] = true;
+            const key = e.key.toLowerCase();
+
+            if (!this.keys[key]) {
+
+                this.justPressed[key] = true;
+
+            }
+
+            this.keys[key] = true;
 
         });
 
-        window.addEventListener("keyup", (e) => {
+        window.addEventListener("keyup", e => {
 
-            this.keys[e.key.toLowerCase()] = false;
+            const key = e.key.toLowerCase();
+
+            this.keys[key] = false;
 
         });
 
@@ -26,7 +37,20 @@ export class Input {
 
     down(key) {
 
-        return this.keys[key] === true;
+        return this.keys[key];
+
+    }
+
+    pressed(key) {
+
+        if (this.justPressed[key]) {
+
+            this.justPressed[key] = false;
+            return true;
+
+        }
+
+        return false;
 
     }
 
