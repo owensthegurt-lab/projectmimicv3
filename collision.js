@@ -7,12 +7,14 @@ COLLISION
 export class CollisionSystem {
 
 
-
 static playerCollision(player, world) {
 
 
-
     for (const building of world.buildings) {
+
+
+
+        const padding = player.radius;
 
 
 
@@ -26,11 +28,13 @@ static playerCollision(player, world) {
 
 
 
+
         /*
         ====================================
         INSIDE BUILDING
         ====================================
         */
+
 
         if (insideBuilding) {
 
@@ -40,45 +44,33 @@ static playerCollision(player, world) {
 
 
 
-                const wallX =
+                const wx =
                     building.x + wall.x;
 
 
-                const wallY =
+                const wy =
                     building.y + wall.y;
-
-
-
-                const padding =
-                    player.radius;
 
 
 
                 if (
 
-                    player.worldX + padding > wallX &&
+                    player.worldX + padding > wx &&
+                    player.worldX - padding < wx + wall.width &&
 
-                    player.worldX - padding < wallX + wall.width &&
-
-                    player.worldY + padding > wallY &&
-
-                    player.worldY - padding < wallY + wall.height
+                    player.worldY + padding > wy &&
+                    player.worldY - padding < wy + wall.height
 
                 ) {
 
-
                     return true;
 
-
                 }
-
 
 
             }
 
 
-
-            // Interior floor is walkable
 
             continue;
 
@@ -90,64 +82,41 @@ static playerCollision(player, world) {
 
         /*
         ====================================
-        OUTSIDE BUILDING
+        OUTSIDE BUILDING WALL
         ====================================
         */
 
 
-        const padding =
-            player.radius;
-
-
-
         if (
 
-
             player.worldX + padding > building.x &&
-
             player.worldX - padding < building.x + building.width &&
 
             player.worldY + padding > building.y &&
-
             player.worldY - padding < building.y + building.height
-
 
         ) {
 
 
 
-            /*
-            Door opening
-            */
-
-
             if(building.door.isOpen) {
 
 
-
-                const door =
-                    building.door;
+                const door = building.door;
 
 
 
-                const inDoorway =
+                if(
 
+                    player.worldX + padding > door.x &&
+                    player.worldX - padding < door.x + door.width &&
 
-                    player.worldX > door.x &&
+                    player.worldY + padding > door.y &&
+                    player.worldY - padding < door.y + door.height
 
-                    player.worldX < door.x + door.width &&
-
-                    player.worldY >
-
-                    building.y + building.height - 45;
-
-
-
-                if(inDoorway) {
-
+                ){
 
                     continue;
-
 
                 }
 
@@ -157,7 +126,6 @@ static playerCollision(player, world) {
 
 
             return true;
-
 
 
         }
@@ -171,9 +139,7 @@ static playerCollision(player, world) {
     return false;
 
 
-
 }
-
 
 
 }
