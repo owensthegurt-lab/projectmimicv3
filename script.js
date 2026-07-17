@@ -1,50 +1,32 @@
-```javascript
-/*
-========================================
-PROJECT MIMIC
-Main Menu
-========================================
-*/
+window.onload = function () {
 
-window.addEventListener("DOMContentLoaded", () => {
+    const play = document.getElementById("play");
+    const settings = document.getElementById("settings");
+    const credits = document.getElementById("credits");
+    const quit = document.getElementById("quit");
 
-    document
-        .getElementById("play")
-        ?.addEventListener("click", () => {
+    play.addEventListener("click", function () {
 
-            window.location.href = "game.html";
+        window.location.href = "game.html";
 
-        });
+    });
 
-    document
-        .getElementById("settings")
-        ?.addEventListener("click", () => {
+    settings.addEventListener("click", function () {
 
-            alert("Settings coming soon.");
+        alert("Settings Coming Soon");
 
-        });
+    });
 
-    document
-        .getElementById("credits")
-        ?.addEventListener("click", () => {
+    credits.addEventListener("click", function () {
 
-            alert(
-`PROJECT MIMIC
+        alert("Project Mimic\nCreated by Owens");
 
-Created by Owens
+    });
 
-Pre-Alpha`
-            );
+    quit.addEventListener("click", function () {
 
-        });
+        alert("Close the tab to quit.");
 
-    document
-        .getElementById("quit")
-        ?.addEventListener("click", () => {
+    });
 
-            alert("Close the tab to quit.");
-
-        });
-
-});
-```
+};
