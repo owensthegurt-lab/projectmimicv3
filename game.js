@@ -6,11 +6,14 @@ PROJECT MIMIC
 
 import { Input } from "./input.js";
 import { Mouse } from "./mouse.js";
+
 import { Camera } from "./camera.js";
 import { Renderer } from "./renderer.js";
 
 import { Player } from "./player.js";
 import { World } from "./world.js";
+
+import { Interaction } from "./interaction.js";
 
 class Game {
 
@@ -22,21 +25,30 @@ class Game {
 
         this.resize();
 
-        window.addEventListener("resize", () => this.resize());
+        window.addEventListener(
+            "resize",
+            () => this.resize()
+        );
 
         // Engine
         this.input = new Input();
         this.mouse = new Mouse(this.canvas);
-        this.camera = new Camera();
-        this.renderer = new Renderer(this.ctx, this.canvas);
 
-        // Game Objects
+        this.camera = new Camera();
+        this.renderer = new Renderer(
+            this.ctx,
+            this.canvas
+        );
+
+        // World
         this.world = new World();
         this.player = new Player();
 
         this.lastTime = performance.now();
 
-        requestAnimationFrame(this.loop.bind(this));
+        requestAnimationFrame(
+            this.loop.bind(this)
+        );
 
     }
 
@@ -49,19 +61,23 @@ class Game {
 
     loop(time) {
 
-        const delta = (time - this.lastTime) / 1000;
+        const delta =
+            (time - this.lastTime) / 1000;
 
         this.lastTime = time;
 
         this.update(delta);
         this.render();
 
-        requestAnimationFrame(this.loop.bind(this));
+        requestAnimationFrame(
+            this.loop.bind(this)
+        );
 
     }
 
     update(delta) {
 
+        // Player
         this.player.update(
             delta,
             this.input,
@@ -69,6 +85,14 @@ class Game {
             this.world
         );
 
+        // Interactions
+        Interaction.update(
+            this.player,
+            this.world,
+            this.input
+        );
+
+        // Camera
         this.camera.update(
             this.player,
             this.canvas,
