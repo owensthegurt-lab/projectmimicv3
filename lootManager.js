@@ -12,11 +12,15 @@ export class LootManager {
 
 constructor(world) {
 
+
     this.world = world;
+
 
     this.loot = [];
 
-    this.createWorldLoot();
+
+    this.spawnLoot();
+
 
 }
 
@@ -24,11 +28,11 @@ constructor(world) {
 
 /*
 ====================================
-CREATE LOOT
+SPAWN LOOT
 ====================================
 */
 
-createWorldLoot() {
+spawnLoot() {
 
 
     /*
@@ -38,42 +42,41 @@ createWorldLoot() {
     */
 
 
-    const house =
-        this.world.buildings[0];
-
-
     this.addLoot(
 
-        house,
+        60,
 
-        80,
-        80,
+        60,
 
-        "supply"
+        "supply",
+
+        this.world.buildings[0]
 
     );
 
 
     this.addLoot(
-
-        house,
 
         300,
-        80,
 
-        "battery"
+        70,
+
+        "battery",
+
+        this.world.buildings[0]
 
     );
 
 
     this.addLoot(
 
-        house,
-
         90,
+
         250,
 
-        "key"
+        "key",
+
+        this.world.buildings[0]
 
     );
 
@@ -86,33 +89,51 @@ createWorldLoot() {
     */
 
 
-    const store =
-        this.world.buildings[1];
-
-
     this.addLoot(
 
-        store,
-
-        150,
-        120,
-
-        "supply"
-
-    );
-
-
-    this.addLoot(
-
-        store,
-
-        260,
         100,
 
-        "battery"
+        100,
+
+        "supply",
+
+        this.world.buildings[1]
 
     );
 
+
+    this.addLoot(
+
+        220,
+
+        200,
+
+        "battery",
+
+        this.world.buildings[1]
+
+    );
+
+
+
+    /*
+    ================================
+    POLICE STATION
+    ================================
+    */
+
+
+    this.addLoot(
+
+        150,
+
+        120,
+
+        "key",
+
+        this.world.buildings[2]
+
+    );
 
 
     /*
@@ -122,30 +143,15 @@ createWorldLoot() {
     */
 
 
-    const hospital =
-        this.world.buildings[3];
-
-
     this.addLoot(
 
-        hospital,
+        200,
 
-        120,
-        100,
+        180,
 
-        "supply"
+        "supply",
 
-    );
-
-
-    this.addLoot(
-
-        hospital,
-
-        300,
-        150,
-
-        "battery"
+        this.world.buildings[3]
 
     );
 
@@ -156,33 +162,29 @@ createWorldLoot() {
 
 /*
 ====================================
-ADD LOOT
+CREATE LOOT
 ====================================
 */
 
-addLoot(building, x, y, type) {
+
+addLoot(x, y, type, building) {
 
 
-    this.loot.push(
+    const loot = new Loot(
 
-        {
+        x,
 
-            building,
+        y,
 
-            item:
-            new Loot(
-
-                x,
-
-                y,
-
-                type
-
-            )
-
-        }
+        type
 
     );
+
+
+    loot.building = building;
+
+
+    this.loot.push(loot);
 
 
 }
@@ -195,47 +197,12 @@ UPDATE
 ====================================
 */
 
-update() {
+update(delta) {
 
-
-}
-
-
-
-/*
-====================================
-INTERACTION
-====================================
-*/
-
-interact(player) {
-
-
-    for(const entry of this.loot) {
-
-
-        if(entry.item.interact(player)) {
-
-
-            console.log(
-
-                "Collected:",
-                entry.item.type
-
-            );
-
-
-            return entry.item;
-
-
-        }
-
-
-    }
-
-
-    return null;
-
+    // Reserved for future:
+    // animations
+    // spawning
+    // rarity systems
 
 }
 
@@ -250,10 +217,26 @@ DRAW
 draw(ctx, cameraX, cameraY) {
 
 
-    for(const entry of this.loot) {
+    for(const item of this.loot) {
 
 
-        entry.item.draw(
+        if(item.collected) {
+
+            continue;
+
+        }
+
+
+
+        if(!item.building) {
+
+            continue;
+
+        }
+
+
+
+        item.draw(
 
             ctx,
 
@@ -261,14 +244,30 @@ draw(ctx, cameraX, cameraY) {
 
             cameraY,
 
-            entry.building.x,
+            item.building.x,
 
-            entry.building.y
+            item.building.y
 
         );
 
 
     }
+
+
+}
+
+
+
+/*
+====================================
+GET ALL
+====================================
+*/
+
+getAll() {
+
+
+    return this.loot;
 
 
 }
