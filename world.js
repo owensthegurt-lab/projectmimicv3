@@ -4,7 +4,7 @@ WORLD
 ====================================
 */
 
-class World {
+export class World {
 
     constructor() {
 
@@ -15,7 +15,6 @@ class World {
 
         this.buildings = [
 
-            // Player House
             {
                 x: 1500,
                 y: 1450,
@@ -24,31 +23,28 @@ class World {
                 color: "#8b5a2b"
             },
 
-            // NPC Building 1
             {
                 x: 900,
                 y: 1100,
                 width: 180,
                 height: 220,
-                color: "#555"
+                color: "#555555"
             },
 
-            // NPC Building 2
             {
                 x: 2300,
                 y: 1300,
                 width: 220,
                 height: 160,
-                color: "#666"
+                color: "#666666"
             },
 
-            // NPC Building 3
             {
                 x: 1800,
                 y: 2200,
                 width: 200,
                 height: 200,
-                color: "#777"
+                color: "#777777"
             }
 
         ];
@@ -59,17 +55,11 @@ class World {
 
         // Grass
         ctx.fillStyle = "#355e3b";
-        ctx.fillRect(
-            0,
-            0,
-            canvasWidth,
-            canvasHeight
-        );
+        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
         // Roads
-        ctx.fillStyle = "#444";
+        ctx.fillStyle = "#444444";
 
-        // Horizontal road
         ctx.fillRect(
             -cameraX,
             1550 - cameraY,
@@ -77,7 +67,6 @@ class World {
             120
         );
 
-        // Vertical road
         ctx.fillRect(
             1600 - cameraX,
             -cameraY,
@@ -97,8 +86,7 @@ class World {
                 building.height
             );
 
-            // Roof outline
-            ctx.strokeStyle = "#222";
+            ctx.strokeStyle = "#222222";
             ctx.lineWidth = 4;
 
             ctx.strokeRect(
