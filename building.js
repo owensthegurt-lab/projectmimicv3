@@ -4,6 +4,8 @@ BUILDING
 ====================================
 */
 
+import { Door } from "./door.js";
+
 export class Building {
 
     constructor(name, x, y, width, height, color) {
@@ -18,16 +20,18 @@ export class Building {
 
         this.color = color;
 
-        // Future systems
-
-        this.hasDoor = true;
-        this.isOpen = false;
         this.enterable = true;
+
+        this.door = new Door(
+            this.x + this.width / 2 - 12,
+            this.y + this.height - 30
+        );
 
     }
 
     draw(ctx, cameraX, cameraY) {
 
+        // Building
         ctx.fillStyle = this.color;
 
         ctx.fillRect(
@@ -40,6 +44,7 @@ export class Building {
 
         );
 
+        // Outline
         ctx.strokeStyle = "#222";
         ctx.lineWidth = 4;
 
@@ -53,25 +58,25 @@ export class Building {
 
         );
 
+        // Roof Highlight
+        ctx.fillStyle = "rgba(255,255,255,0.08)";
+
+        ctx.fillRect(
+
+            this.x - cameraX,
+            this.y - cameraY,
+
+            this.width,
+            12
+
+        );
+
         // Door
-
-        if (this.hasDoor) {
-
-            ctx.fillStyle = this.isOpen
-                ? "#5E3A1A"
-                : "#3A2412";
-
-            ctx.fillRect(
-
-                this.x - cameraX + this.width / 2 - 12,
-                this.y - cameraY + this.height - 30,
-
-                24,
-                30
-
-            );
-
-        }
+        this.door.draw(
+            ctx,
+            cameraX,
+            cameraY
+        );
 
     }
 
