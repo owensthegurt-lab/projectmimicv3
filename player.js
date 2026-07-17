@@ -4,31 +4,31 @@ PLAYER
 ====================================
 */
 
+import { CollisionSystem } from "./collision.js";
+
 export class Player {
 
     constructor() {
 
-        // World Position
         this.worldX = 1000;
         this.worldY = 1000;
 
-        // Movement
         this.speed = 300;
+        this.radius = 15;
 
-        // Direction
         this.direction = "down";
 
     }
 
-    update(delta, input) {
+    update(delta, input, world) {
 
-        let moving = false;
+        const oldX = this.worldX;
+        const oldY = this.worldY;
 
         if (input.down("w")) {
 
             this.worldY -= this.speed * delta;
             this.direction = "up";
-            moving = true;
 
         }
 
@@ -36,7 +36,6 @@ export class Player {
 
             this.worldY += this.speed * delta;
             this.direction = "down";
-            moving = true;
 
         }
 
@@ -44,7 +43,6 @@ export class Player {
 
             this.worldX -= this.speed * delta;
             this.direction = "left";
-            moving = true;
 
         }
 
@@ -52,7 +50,13 @@ export class Player {
 
             this.worldX += this.speed * delta;
             this.direction = "right";
-            moving = true;
+
+        }
+
+        if (CollisionSystem.playerCollision(this, world)) {
+
+            this.worldX = oldX;
+            this.worldY = oldY;
 
         }
 
@@ -71,7 +75,6 @@ export class Player {
 
         // Legs
         ctx.fillStyle = "#1f1f1f";
-
         ctx.fillRect(x - 8, y + 10, 5, 10);
         ctx.fillRect(x + 3, y + 10, 5, 10);
 
