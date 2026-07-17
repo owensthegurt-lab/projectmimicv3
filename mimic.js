@@ -8,12 +8,6 @@ export class Mimic {
 
     constructor(x = 2500, y = 2500) {
 
-        /*
-        ==========================
-        WORLD POSITION
-        ==========================
-        */
-
         this.worldX = x;
         this.worldY = y;
 
@@ -23,9 +17,10 @@ export class Mimic {
         ==========================
         */
 
-        this.speed = 110;
+        this.speed = 95;
 
         this.angle = 0;
+        this.targetAngle = 0;
 
         this.targetX = x;
         this.targetY = y;
@@ -38,7 +33,7 @@ export class Mimic {
 
         this.state = "idle";
 
-        this.waitTimer = 2;
+        this.waitTimer = 3;
 
         /*
         ==========================
@@ -50,7 +45,7 @@ export class Mimic {
 
         /*
         ==========================
-        DISGUISE SYSTEM
+        APPEARANCE
         ==========================
         */
 
@@ -76,18 +71,32 @@ export class Mimic {
     }
 
     /*
-    ==================================
+    ====================================
     UPDATE
-    ==================================
+    ====================================
     */
 
     update(delta, world) {
 
-        this.walkCycle += delta * 6;
+        this.walkCycle += delta * 5;
 
         switch (this.state) {
 
             case "idle":
+
+                this.waitTimer -= delta;
+
+                if (this.waitTimer <= 0) {
+
+                    this.chooseDestination(world);
+
+                    this.state = "roam";
+
+                }
+
+                break;
+
+            case "watch":
 
                 this.waitTimer -= delta;
 
@@ -112,22 +121,33 @@ export class Mimic {
     }
 
     /*
-    ==================================
-    CHOOSE DESTINATION
-    ==================================
+    ====================================
+    PATROL
+    ====================================
     */
 
     chooseDestination(world) {
 
-        this.targetX = Math.random() * world.width;
-        this.targetY = Math.random() * world.height;
+        const point = world.patrolPoints[
+
+            Math.floor(
+
+                Math.random() *
+                world.patrolPoints.length
+
+            )
+
+        ];
+
+        this.targetX = point.x;
+        this.targetY = point.y;
 
     }
 
     /*
-    ==================================
+    ====================================
     MOVE
-    ==================================
+    ====================================
     */
 
     move(delta) {
@@ -137,16 +157,32 @@ export class Mimic {
 
         const dist = Math.hypot(dx, dy);
 
-        if (dist < 6) {
+        if (dist < 8) {
 
-            this.state = "idle";
-            this.waitTimer = 2 + Math.random() * 3;
+            if (Math.random() < 0.35) {
+
+                this.state = "watch";
+                this.waitTimer = 4 + Math.random() * 4;
+
+            } else {
+
+                this.state = "idle";
+                this.waitTimer = 2 + Math.random() * 3;
+
+            }
 
             return;
 
         }
 
-        this.angle = Math.atan2(dy, dx);
+        this.targetAngle = Math.atan2(dy, dx);
+
+        let diff = this.targetAngle - this.angle;
+
+        while (diff > Math.PI) diff -= Math.PI * 2;
+        while (diff < -Math.PI) diff += Math.PI * 2;
+
+        this.angle += diff * 5 * delta;
 
         this.worldX +=
             Math.cos(this.angle) *
@@ -161,9 +197,9 @@ export class Mimic {
     }
 
     /*
-    ==================================
+    ====================================
     DRAW
-    ==================================
+    ====================================
     */
 
     draw(ctx, cameraX, cameraY) {
@@ -172,10 +208,10 @@ export class Mimic {
         const y = this.worldY - cameraY;
 
         const armSwing =
-            Math.sin(this.walkCycle) * 8;
+            Math.sin(this.walkCycle) * 7;
 
         const legSwing =
-            Math.sin(this.walkCycle) * 6;
+            Math.sin(this.walkCycle) * 5;
 
         ctx.save();
 
@@ -216,10 +252,10 @@ export class Mimic {
         ctx.beginPath();
 
         ctx.moveTo(-10, -6);
-        ctx.lineTo(-14 + armSwing, 48);
+        ctx.lineTo(-14 + armSwing, 50);
 
         ctx.moveTo(10, -6);
-        ctx.lineTo(14 - armSwing, 48);
+        ctx.lineTo(14 - armSwing, 50);
 
         ctx.stroke();
 
@@ -295,9 +331,9 @@ export class Mimic {
     }
 
     /*
-    ==================================
+    ====================================
     FUTURE DISGUISE SYSTEM
-    ==================================
+    ====================================
     */
 
     become(playerAppearance) {
