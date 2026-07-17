@@ -13,6 +13,7 @@ export class World {
         this.width = 5000;
         this.height = 5000;
 
+        // Roads
         this.roads = [
 
             {
@@ -31,14 +32,15 @@ export class World {
 
         ];
 
+        // Buildings
         this.buildings = [
 
             new Building(
                 "Player House",
                 1200,
                 1200,
-                220,
-                180,
+                420,
+                340,
                 "#7A5230"
             ),
 
@@ -46,8 +48,8 @@ export class World {
                 "Store",
                 1800,
                 1100,
-                200,
-                200,
+                340,
+                340,
                 "#666666"
             ),
 
@@ -55,8 +57,8 @@ export class World {
                 "Police Station",
                 2100,
                 1700,
-                220,
-                180,
+                400,
+                320,
                 "#5A5A5A"
             ),
 
@@ -64,13 +66,14 @@ export class World {
                 "Hospital",
                 900,
                 1900,
-                240,
-                200,
+                450,
+                380,
                 "#808080"
             )
 
         ];
 
+        // Trees
         this.trees = [];
 
         for (let i = 0; i < 120; i++) {
@@ -142,10 +145,14 @@ export class World {
         for (const building of this.buildings) {
 
             building.draw(
+
                 ctx,
+
                 cameraX,
                 cameraY,
+
                 player
+
             );
 
         }
