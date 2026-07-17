@@ -13,7 +13,6 @@ static playerCollision(player, world) {
     for (const building of world.buildings) {
 
 
-
         const padding = player.radius;
 
 
@@ -28,7 +27,6 @@ static playerCollision(player, world) {
 
 
 
-
         /*
         ====================================
         INSIDE BUILDING
@@ -40,7 +38,14 @@ static playerCollision(player, world) {
 
 
 
-            for (const wall of building.interior.walls) {
+            // Skip the 4 outer boundary walls
+            // Only collide with room divider walls
+
+            for (let i = 4; i < building.interior.walls.length; i++) {
+
+
+                const wall =
+                    building.interior.walls[i];
 
 
 
@@ -71,7 +76,6 @@ static playerCollision(player, world) {
             }
 
 
-
             continue;
 
 
@@ -80,9 +84,10 @@ static playerCollision(player, world) {
 
 
 
+
         /*
         ====================================
-        OUTSIDE BUILDING WALL
+        OUTSIDE BUILDING
         ====================================
         */
 
@@ -99,14 +104,15 @@ static playerCollision(player, world) {
 
 
 
-            if(building.door.isOpen) {
+            if (building.door.isOpen) {
 
 
-                const door = building.door;
+                const door =
+                    building.door;
 
 
 
-                if(
+                if (
 
                     player.worldX + padding > door.x &&
                     player.worldX - padding < door.x + door.width &&
@@ -114,7 +120,7 @@ static playerCollision(player, world) {
                     player.worldY + padding > door.y &&
                     player.worldY - padding < door.y + door.height
 
-                ){
+                ) {
 
                     continue;
 
@@ -129,7 +135,6 @@ static playerCollision(player, world) {
 
 
         }
-
 
 
     }
