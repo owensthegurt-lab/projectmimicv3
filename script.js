@@ -1,4 +1,4 @@
-```javascript id="w8xk3f"
+```javascript
 /*
 ========================================
 PROJECT MIMIC
@@ -8,66 +8,43 @@ Main Menu
 
 window.addEventListener("DOMContentLoaded", () => {
 
-    const playButton = document.getElementById("play");
-    const settingsButton = document.getElementById("settings");
-    const creditsButton = document.getElementById("credits");
-    const quitButton = document.getElementById("quit");
+    document
+        .getElementById("play")
+        ?.addEventListener("click", () => {
 
-    if (playButton) {
-        playButton.addEventListener("click", startGame);
-    }
+            window.location.href = "game.html";
 
-    if (settingsButton) {
-        settingsButton.addEventListener("click", openSettings);
-    }
+        });
 
-    if (creditsButton) {
-        creditsButton.addEventListener("click", openCredits);
-    }
+    document
+        .getElementById("settings")
+        ?.addEventListener("click", () => {
 
-    if (quitButton) {
-        quitButton.addEventListener("click", quitGame);
-    }
+            alert("Settings coming soon.");
 
-});
+        });
 
-function startGame() {
+    document
+        .getElementById("credits")
+        ?.addEventListener("click", () => {
 
-    document.body.style.transition = "opacity .5s ease";
-    document.body.style.opacity = "0";
-
-    setTimeout(() => {
-
-        window.location.href = "game.html";
-
-    }, 500);
-
-}
-
-function openSettings() {
-
-    alert("Settings are coming soon.");
-
-}
-
-function openCredits() {
-
-    alert(
+            alert(
 `PROJECT MIMIC
 
 Created by Owens
 
-Powered by HTML, CSS & JavaScript
+Pre-Alpha`
+            );
 
-More credits will be added during development.`
-    );
+        });
 
-}
+    document
+        .getElementById("quit")
+        ?.addEventListener("click", () => {
 
-function quitGame() {
+            alert("Close the tab to quit.");
 
-    alert("Close this tab to quit Project Mimic.");
+        });
 
-}
+});
 ```
-
