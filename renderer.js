@@ -5,6 +5,7 @@ RENDERER
 */
 
 import { Lighting } from "./lighting.js";
+import { UI } from "./ui.js";
 
 export class Renderer {
 
@@ -14,6 +15,7 @@ export class Renderer {
         this.canvas = canvas;
 
         this.lighting = new Lighting();
+        this.ui = new UI();
 
     }
 
@@ -21,12 +23,16 @@ export class Renderer {
 
         const ctx = this.ctx;
 
+        // Clear Screen
+
         ctx.clearRect(
             0,
             0,
             this.canvas.width,
             this.canvas.height
         );
+
+        // Draw World
 
         world.draw(
 
@@ -42,6 +48,8 @@ export class Renderer {
 
         );
 
+        // Draw Player
+
         player.draw(
 
             ctx,
@@ -51,6 +59,8 @@ export class Renderer {
 
         );
 
+        // Lighting
+
         this.lighting.draw(
 
             ctx,
@@ -58,6 +68,20 @@ export class Renderer {
             this.canvas,
 
             player
+
+        );
+
+        // UI (always draw LAST)
+
+        this.ui.draw(
+
+            ctx,
+
+            this.canvas,
+
+            player,
+
+            world
 
         );
 
