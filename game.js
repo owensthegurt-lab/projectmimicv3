@@ -52,6 +52,7 @@ class Game {
         this.lastTime = time;
 
         this.update(delta);
+
         this.render();
 
         requestAnimationFrame(this.loop.bind(this));
@@ -60,17 +61,23 @@ class Game {
 
     update(delta) {
 
-        this.player.update(delta, this.keys);
+        this.player.update(
+            delta,
+            this.keys,
+            this.world
+        );
 
     }
 
     render() {
 
         const cameraX =
-            this.player.worldX - this.canvas.width / 2;
+            this.player.worldX -
+            this.canvas.width / 2;
 
         const cameraY =
-            this.player.worldY - this.canvas.height / 2;
+            this.player.worldY -
+            this.canvas.height / 2;
 
         this.world.draw(
             this.ctx,
