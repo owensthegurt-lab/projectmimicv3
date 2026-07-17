@@ -16,7 +16,6 @@ export class Flashlight {
 
         ctx.save();
 
-        // Darkness
         ctx.fillStyle = "rgba(0,0,0,0.90)";
         ctx.fillRect(
             0,
@@ -25,7 +24,6 @@ export class Flashlight {
             canvas.height
         );
 
-        // Light
         ctx.globalCompositeOperation = "destination-out";
 
         const x = canvas.width / 2;
