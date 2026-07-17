@@ -6,52 +6,88 @@ DOOR
 
 export class Door {
 
-    constructor(x, y, width = 24, height = 30) {
 
-        this.x = x;
-        this.y = y;
+constructor(x, y, width = 50, height = 45) {
 
-        this.width = width;
-        this.height = height;
 
-        this.isOpen = false;
+    this.x = x;
 
-    }
+    this.y = y;
 
-    toggle() {
+    this.width = width;
 
-        this.isOpen = !this.isOpen;
+    this.height = height;
 
-    }
 
-    draw(ctx, cameraX, cameraY) {
+    this.isOpen = false;
 
-        ctx.fillStyle = this.isOpen
-            ? "#6A4A24"
-            : "#3E2814";
 
-        ctx.fillRect(
+}
 
-            this.x - cameraX,
-            this.y - cameraY,
 
-            this.width,
-            this.height
 
-        );
+toggle() {
 
-    }
+    this.isOpen = !this.isOpen;
 
-    playerNear(player) {
+}
 
-        const cx = this.x + this.width / 2;
-        const cy = this.y + this.height / 2;
 
-        const dx = player.worldX - cx;
-        const dy = player.worldY - cy;
 
-        return Math.sqrt(dx * dx + dy * dy) < 70;
+draw(ctx, cameraX, cameraY) {
 
-    }
+
+    ctx.fillStyle = this.isOpen
+
+        ? "#6A4A24"
+
+        : "#3E2814";
+
+
+
+    ctx.fillRect(
+
+        this.x - cameraX,
+
+        this.y - cameraY,
+
+        this.width,
+
+        this.height
+
+    );
+
+
+}
+
+
+
+playerNear(player) {
+
+
+    const cx =
+        this.x + this.width / 2;
+
+
+    const cy =
+        this.y + this.height / 2;
+
+
+
+    const dx =
+        player.worldX - cx;
+
+
+    const dy =
+        player.worldY - cy;
+
+
+
+    return Math.sqrt(dx * dx + dy * dy) < 90;
+
+
+}
+
+
 
 }
