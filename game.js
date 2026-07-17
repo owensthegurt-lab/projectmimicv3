@@ -30,7 +30,6 @@ class Game {
         });
 
         this.world = new World();
-
         this.player = new Player();
 
         this.lastTime = performance.now();
@@ -53,7 +52,6 @@ class Game {
         this.lastTime = time;
 
         this.update(delta);
-
         this.render();
 
         requestAnimationFrame(this.loop.bind(this));
@@ -62,25 +60,30 @@ class Game {
 
     update(delta) {
 
-        this.player.update(
-            delta,
-            this.keys
-        );
+        this.player.update(delta, this.keys);
 
     }
 
     render() {
 
+        const cameraX =
+            this.player.worldX - this.canvas.width / 2;
+
+        const cameraY =
+            this.player.worldY - this.canvas.height / 2;
+
         this.world.draw(
             this.ctx,
-            0,
-            0,
+            cameraX,
+            cameraY,
             this.canvas.width,
             this.canvas.height
         );
 
         this.player.draw(
-            this.ctx
+            this.ctx,
+            this.canvas.width,
+            this.canvas.height
         );
 
     }
