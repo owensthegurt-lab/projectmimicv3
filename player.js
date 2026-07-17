@@ -16,42 +16,35 @@ export class Player {
         this.speed = 300;
         this.radius = 15;
 
-        this.direction = "down";
+        // Mouse Facing
+        this.angle = 0;
 
     }
 
-    update(delta, input, world) {
+    update(delta, input, mouse, world) {
 
         const oldX = this.worldX;
         const oldY = this.worldY;
 
+        // Movement
+
         if (input.down("w")) {
-
             this.worldY -= this.speed * delta;
-            this.direction = "up";
-
         }
 
         if (input.down("s")) {
-
             this.worldY += this.speed * delta;
-            this.direction = "down";
-
         }
 
         if (input.down("a")) {
-
             this.worldX -= this.speed * delta;
-            this.direction = "left";
-
         }
 
         if (input.down("d")) {
-
             this.worldX += this.speed * delta;
-            this.direction = "right";
-
         }
+
+        // Collision
 
         if (CollisionSystem.playerCollision(this, world)) {
 
@@ -59,6 +52,18 @@ export class Player {
             this.worldY = oldY;
 
         }
+
+        // Face Mouse
+
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
+
+        this.angle = Math.atan2(
+
+            mouse.y - centerY,
+            mouse.x - centerX
+
+        );
 
     }
 
@@ -68,57 +73,49 @@ export class Player {
         const y = height / 2;
 
         // Shadow
+
         ctx.fillStyle = "rgba(0,0,0,.35)";
         ctx.beginPath();
         ctx.ellipse(x, y + 14, 12, 6, 0, 0, Math.PI * 2);
         ctx.fill();
 
+        ctx.save();
+
+        ctx.translate(x, y);
+        ctx.rotate(this.angle);
+
         // Legs
+
         ctx.fillStyle = "#1f1f1f";
-        ctx.fillRect(x - 8, y + 10, 5, 10);
-        ctx.fillRect(x + 3, y + 10, 5, 10);
+
+        ctx.fillRect(-8, 10, 5, 10);
+        ctx.fillRect(3, 10, 5, 10);
 
         // Body
+
         ctx.fillStyle = "#2c7be5";
-        ctx.fillRect(x - 10, y - 8, 20, 22);
+
+        ctx.fillRect(-10, -8, 20, 22);
 
         // Head
-        ctx.fillStyle = "#f0d4b0";
+
+        ctx.fillStyle = "#f2d2b6";
+
         ctx.beginPath();
-        ctx.arc(x, y - 16, 8, 0, Math.PI * 2);
+        ctx.arc(0, -16, 8, 0, Math.PI * 2);
         ctx.fill();
 
         // Flashlight
-        ctx.strokeStyle = "#999";
+
+        ctx.strokeStyle = "#bdbdbd";
         ctx.lineWidth = 4;
 
         ctx.beginPath();
-
-        switch (this.direction) {
-
-            case "up":
-                ctx.moveTo(x, y - 6);
-                ctx.lineTo(x, y - 20);
-                break;
-
-            case "down":
-                ctx.moveTo(x, y + 6);
-                ctx.lineTo(x, y + 20);
-                break;
-
-            case "left":
-                ctx.moveTo(x - 6, y);
-                ctx.lineTo(x - 20, y);
-                break;
-
-            case "right":
-                ctx.moveTo(x + 6, y);
-                ctx.lineTo(x + 20, y);
-                break;
-
-        }
-
+        ctx.moveTo(8, 0);
+        ctx.lineTo(22, 0);
         ctx.stroke();
+
+        ctx.restore();
 
     }
 
