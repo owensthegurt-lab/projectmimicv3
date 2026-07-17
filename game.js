@@ -10,12 +10,12 @@ import { Renderer } from "./renderer.js";
 
 import { Player } from "./player.js";
 import { World } from "./world.js";
-import { Flashlight } from "./flashlight.js";
 
 class Game {
 
     constructor() {
 
+        // Canvas
         this.canvas = document.getElementById("game");
         this.ctx = this.canvas.getContext("2d");
 
@@ -28,11 +28,11 @@ class Game {
         this.camera = new Camera();
         this.renderer = new Renderer(this.ctx, this.canvas);
 
-        // Game Objects
+        // World
         this.world = new World();
         this.player = new Player();
-        this.flashlight = new Flashlight();
 
+        // Timing
         this.lastTime = performance.now();
 
         requestAnimationFrame(this.loop.bind(this));
@@ -61,14 +61,17 @@ class Game {
 
     update(delta) {
 
+        // Update Player
         this.player.update(
             delta,
             this.input
         );
 
+        // Update Camera
         this.camera.update(
             this.player,
-            this.canvas
+            this.canvas,
+            delta
         );
 
     }
@@ -76,10 +79,11 @@ class Game {
     render() {
 
         this.renderer.render(
+
             this.world,
             this.player,
-            this.camera,
-            this.flashlight
+            this.camera
+
         );
 
     }
