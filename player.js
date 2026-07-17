@@ -16,12 +16,26 @@ class Player {
 
     }
 
-    update(delta, keys) {
+    update(delta, keys, world) {
 
-        if (keys["w"]) this.worldY -= this.speed * delta;
-        if (keys["s"]) this.worldY += this.speed * delta;
+        const oldX = this.worldX;
+        const oldY = this.worldY;
+
+        // Horizontal Movement
         if (keys["a"]) this.worldX -= this.speed * delta;
         if (keys["d"]) this.worldX += this.speed * delta;
+
+        if (CollisionSystem.checkPlayer(this, world)) {
+            this.worldX = oldX;
+        }
+
+        // Vertical Movement
+        if (keys["w"]) this.worldY -= this.speed * delta;
+        if (keys["s"]) this.worldY += this.speed * delta;
+
+        if (CollisionSystem.checkPlayer(this, world)) {
+            this.worldY = oldY;
+        }
 
     }
 
@@ -31,8 +45,10 @@ class Player {
         const y = canvasHeight / 2;
 
         // Shadow
-        ctx.fillStyle = "rgba(0,0,0,.35)";
+        ctx.fillStyle = "rgba(0,0,0,0.35)";
+
         ctx.beginPath();
+
         ctx.ellipse(
             x,
             y + 12,
@@ -42,11 +58,14 @@ class Player {
             0,
             Math.PI * 2
         );
+
         ctx.fill();
 
         // Player
         ctx.fillStyle = "white";
+
         ctx.beginPath();
+
         ctx.arc(
             x,
             y,
@@ -54,6 +73,7 @@ class Player {
             0,
             Math.PI * 2
         );
+
         ctx.fill();
 
     }
