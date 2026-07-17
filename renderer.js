@@ -29,16 +29,7 @@ export class Renderer {
             this.canvas.height
         );
 
-        // Background
-        ctx.fillStyle = "#151515";
-        ctx.fillRect(
-            0,
-            0,
-            this.canvas.width,
-            this.canvas.height
-        );
-
-        // World
+        // Draw World
         world.draw(
             ctx,
             camera.x,
@@ -47,18 +38,17 @@ export class Renderer {
             this.canvas.height
         );
 
-        // Player
+        // Draw Player
         player.draw(
             ctx,
             this.canvas.width,
             this.canvas.height
         );
 
-        // Flashlight (draw last)
+        // Draw Flashlight LAST
         this.flashlight.draw(
             ctx,
-            this.canvas,
-            player
+            this.canvas
         );
 
     }
