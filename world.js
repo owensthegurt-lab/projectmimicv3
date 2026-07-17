@@ -31,7 +31,6 @@ export class World {
 
         ];
 
-        // Buildings
         this.buildings = [
 
             new Building(
@@ -72,7 +71,6 @@ export class World {
 
         ];
 
-        // Trees
         this.trees = [];
 
         for (let i = 0; i < 120; i++) {
@@ -81,7 +79,6 @@ export class World {
 
                 x: Math.random() * this.width,
                 y: Math.random() * this.height,
-
                 radius: 20 + Math.random() * 10
 
             });
@@ -90,11 +87,10 @@ export class World {
 
     }
 
-    draw(ctx, cameraX, cameraY, screenWidth, screenHeight) {
+    draw(ctx, cameraX, cameraY, screenWidth, screenHeight, player) {
 
         // Grass
         ctx.fillStyle = "#315C35";
-
         ctx.fillRect(
             0,
             0,
@@ -148,7 +144,8 @@ export class World {
             building.draw(
                 ctx,
                 cameraX,
-                cameraY
+                cameraY,
+                player
             );
 
         }
