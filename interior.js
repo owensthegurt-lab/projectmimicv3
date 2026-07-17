@@ -11,7 +11,29 @@ export class Interior {
         this.width = width;
         this.height = height;
 
+        this.walls = [];
         this.furniture = [];
+
+        // Outer walls
+
+        this.addWall(0, 0, width, 12);
+        this.addWall(0, height - 12, width, 12);
+
+        this.addWall(0, 0, 12, height);
+        this.addWall(width - 12, 0, 12, height);
+
+    }
+
+    addWall(x, y, width, height) {
+
+        this.walls.push({
+
+            x,
+            y,
+            width,
+            height
+
+        });
 
     }
 
@@ -32,7 +54,8 @@ export class Interior {
     draw(ctx, cameraX, cameraY, originX, originY) {
 
         // Floor
-        ctx.fillStyle = "#8B7B63";
+
+        ctx.fillStyle = "#8A7A63";
 
         ctx.fillRect(
 
@@ -45,6 +68,7 @@ export class Interior {
         );
 
         // Furniture
+
         for (const item of this.furniture) {
 
             ctx.fillStyle = item.color;
@@ -56,6 +80,24 @@ export class Interior {
 
                 item.width,
                 item.height
+
+            );
+
+        }
+
+        // Walls
+
+        ctx.fillStyle = "#5D4A37";
+
+        for (const wall of this.walls) {
+
+            ctx.fillRect(
+
+                originX + wall.x - cameraX,
+                originY + wall.y - cameraY,
+
+                wall.width,
+                wall.height
 
             );
 
