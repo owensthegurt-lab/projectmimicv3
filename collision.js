@@ -4,7 +4,7 @@ COLLISION
 ====================================
 */
 
-class CollisionSystem {
+export class CollisionSystem {
 
     static checkPlayer(player, world) {
 
