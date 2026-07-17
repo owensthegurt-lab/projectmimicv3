@@ -8,15 +8,20 @@ export class Flashlight {
 
     constructor() {
 
-        this.radius = 220;
+        this.length = 500;
+        this.width = Math.PI / 5;
 
     }
 
     draw(ctx, canvas, player) {
 
+        const x = canvas.width / 2;
+        const y = canvas.height / 2;
+
         ctx.save();
 
-        ctx.fillStyle = "rgba(0,0,0,0.90)";
+        // Darkness
+        ctx.fillStyle = "rgba(0,0,0,0.72)";
         ctx.fillRect(
             0,
             0,
@@ -24,34 +29,41 @@ export class Flashlight {
             canvas.height
         );
 
+        // Light Cone
         ctx.globalCompositeOperation = "destination-out";
 
-        const x = canvas.width / 2;
-        const y = canvas.height / 2;
+        ctx.translate(x, y);
+        ctx.rotate(player.angle);
 
         const gradient = ctx.createRadialGradient(
-            x,
-            y,
             0,
-            x,
-            y,
-            this.radius
+            0,
+            0,
+            0,
+            0,
+            this.length
         );
 
         gradient.addColorStop(0, "rgba(0,0,0,1)");
-        gradient.addColorStop(0.6, "rgba(0,0,0,.8)");
+        gradient.addColorStop(.65, "rgba(0,0,0,.65)");
         gradient.addColorStop(1, "rgba(0,0,0,0)");
 
         ctx.fillStyle = gradient;
 
         ctx.beginPath();
+
+        ctx.moveTo(0, 0);
+
         ctx.arc(
-            x,
-            y,
-            this.radius,
             0,
-            Math.PI * 2
+            0,
+            this.length,
+            -this.width,
+            this.width
         );
+
+        ctx.closePath();
+
         ctx.fill();
 
         ctx.restore();
