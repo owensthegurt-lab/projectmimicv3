@@ -6,7 +6,9 @@ MIMIC MANAGER
 
 import { Mimic } from "./mimic.js";
 
+
 export class MimicManager {
+
 
     constructor(world) {
 
@@ -18,6 +20,7 @@ export class MimicManager {
 
     }
 
+
     /*
     ====================================
     SPAWN
@@ -26,6 +29,7 @@ export class MimicManager {
 
     spawnInitialMimic() {
 
+
         const mimic = new Mimic(
 
             this.world.width * 0.75,
@@ -33,19 +37,26 @@ export class MimicManager {
 
         );
 
+
         this.mimics.push(mimic);
 
+
     }
+
+
 
     spawn(x, y) {
 
-        this.mimics.push(
 
-            new Mimic(x, y)
+        const mimic = new Mimic(x, y);
 
-        );
+
+        this.mimics.push(mimic);
+
 
     }
+
+
 
     /*
     ====================================
@@ -55,7 +66,9 @@ export class MimicManager {
 
     update(delta, player) {
 
+
         for (const mimic of this.mimics) {
+
 
             mimic.update(
 
@@ -67,9 +80,13 @@ export class MimicManager {
 
             );
 
+
         }
 
+
     }
+
+
 
     /*
     ====================================
@@ -79,20 +96,27 @@ export class MimicManager {
 
     draw(ctx, camera) {
 
+
         for (const mimic of this.mimics) {
+
 
             mimic.draw(
 
                 ctx,
 
                 camera.x,
+
                 camera.y
 
             );
 
+
         }
 
+
     }
+
+
 
     /*
     ====================================
@@ -102,33 +126,61 @@ export class MimicManager {
 
     getAll() {
 
+
         return this.mimics;
 
+
     }
+
+
 
     getClosest(player) {
 
+
         let closest = null;
+
         let bestDistance = Infinity;
+
+
 
         for (const mimic of this.mimics) {
 
-            const dx = player.worldX - mimic.worldX;
-            const dy = player.worldY - mimic.worldY;
 
-            const dist = Math.hypot(dx, dy);
+            const dx =
+                player.worldX -
+                mimic.worldX;
 
-            if (dist < bestDistance) {
 
-                bestDistance = dist;
+            const dy =
+                player.worldY -
+                mimic.worldY;
+
+
+
+            const distance =
+                Math.hypot(dx, dy);
+
+
+
+            if (distance < bestDistance) {
+
+
+                bestDistance = distance;
+
                 closest = mimic;
+
 
             }
 
+
         }
+
 
         return closest;
 
+
     }
+
+
 
 }
