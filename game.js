@@ -5,6 +5,7 @@ PROJECT MIMIC
 */
 
 import { Input } from "./input.js";
+import { Mouse } from "./mouse.js";
 import { Camera } from "./camera.js";
 import { Renderer } from "./renderer.js";
 
@@ -25,14 +26,14 @@ class Game {
 
         // Engine
         this.input = new Input();
+        this.mouse = new Mouse(this.canvas);
         this.camera = new Camera();
         this.renderer = new Renderer(this.ctx, this.canvas);
 
-        // World
+        // Game Objects
         this.world = new World();
         this.player = new Player();
 
-        // Timing
         this.lastTime = performance.now();
 
         requestAnimationFrame(this.loop.bind(this));
@@ -61,13 +62,13 @@ class Game {
 
     update(delta) {
 
-        // Update Player
         this.player.update(
             delta,
-            this.input
+            this.input,
+            this.mouse,
+            this.world
         );
 
-        // Update Camera
         this.camera.update(
             this.player,
             this.canvas,
@@ -79,11 +80,9 @@ class Game {
     render() {
 
         this.renderer.render(
-
             this.world,
             this.player,
             this.camera
-
         );
 
     }
