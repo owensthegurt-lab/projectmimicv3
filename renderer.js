@@ -19,20 +19,31 @@ export class Renderer {
 
     }
 
-    render(world, player, camera) {
+    render(world, player, camera, mimicManager) {
 
         const ctx = this.ctx;
 
-        // Clear Screen
+        /*
+        ====================================
+        CLEAR
+        ====================================
+        */
 
         ctx.clearRect(
+
             0,
             0,
+
             this.canvas.width,
             this.canvas.height
+
         );
 
-        // Draw World
+        /*
+        ====================================
+        WORLD
+        ====================================
+        */
 
         world.draw(
 
@@ -48,7 +59,25 @@ export class Renderer {
 
         );
 
-        // Draw Player
+        /*
+        ====================================
+        MIMIC
+        ====================================
+        */
+
+        mimicManager.draw(
+
+            ctx,
+
+            camera
+
+        );
+
+        /*
+        ====================================
+        PLAYER
+        ====================================
+        */
 
         player.draw(
 
@@ -59,7 +88,11 @@ export class Renderer {
 
         );
 
-        // Lighting
+        /*
+        ====================================
+        LIGHTING
+        ====================================
+        */
 
         this.lighting.draw(
 
@@ -71,7 +104,11 @@ export class Renderer {
 
         );
 
-        // UI (always draw LAST)
+        /*
+        ====================================
+        UI
+        ====================================
+        */
 
         this.ui.draw(
 
