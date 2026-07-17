@@ -1,4 +1,10 @@
-class Mimic {
+/*
+====================================
+MIMIC
+====================================
+*/
+
+export class Mimic {
 
 
 constructor(x = 2500, y = 2500) {
@@ -100,10 +106,12 @@ this.disguise = null;
 
 
 
+
 update(delta, world, player){
 
 
 this.walkCycle += delta * 5;
+
 
 
 /*
@@ -159,14 +167,13 @@ break;
 
 
 
-
 case "watch":
 
 
     this.waitTimer -= delta;
 
 
-    if(this.waitTimer <=0){
+    if(this.waitTimer <= 0){
 
 
         this.chooseDestination(world);
@@ -181,7 +188,6 @@ break;
 
 
 
-
 case "search":
 
 
@@ -192,6 +198,7 @@ case "search":
     if(Math.hypot(
 
         this.targetX-this.worldX,
+
         this.targetY-this.worldY
 
     ) < 10){
@@ -218,7 +225,7 @@ case "search":
 
 
 
-    if(this.searchTimer <=0){
+    if(this.searchTimer <= 0){
 
 
         this.state="idle";
@@ -230,7 +237,6 @@ case "search":
 
 
 break;
-
 
 
 
@@ -257,6 +263,7 @@ move(delta){
 
 
 let dx = this.targetX - this.worldX;
+
 let dy = this.targetY - this.worldY;
 
 
@@ -271,13 +278,13 @@ if(distance < 8){
     if(this.playerSeen){
 
 
-        this.playerSeen=false;
+        this.playerSeen = false;
 
 
-        this.state="search";
+        this.state = "search";
 
 
-        this.searchTimer=10;
+        this.searchTimer = 10;
 
 
         return;
@@ -287,12 +294,12 @@ if(distance < 8){
 
 
 
-    if(Math.random()<0.35){
+    if(Math.random() < 0.35){
 
 
-        this.state="watch";
+        this.state = "watch";
 
-        this.waitTimer=
+        this.waitTimer =
         4 + Math.random()*4;
 
 
@@ -301,13 +308,14 @@ if(distance < 8){
     else{
 
 
-        this.state="idle";
+        this.state = "idle";
 
-        this.waitTimer=
+        this.waitTimer =
         2 + Math.random()*3;
 
 
     }
+
 
 
     return;
@@ -318,8 +326,7 @@ if(distance < 8){
 
 
 
-this.angle =
-Math.atan2(dy,dx);
+this.angle = Math.atan2(dy,dx);
 
 
 
@@ -342,10 +349,12 @@ delta;
 
 
 
+
 chooseDestination(world){
 
 
 let distance = 400;
+
 
 
 this.targetX =
@@ -361,6 +370,7 @@ this.worldY +
 distance;
 
 
+
 }
 
 
@@ -374,13 +384,13 @@ draw(ctx,cameraX,cameraY){
 let x =
 this.worldX-cameraX;
 
+
 let y =
 this.worldY-cameraY;
 
 
 
 ctx.save();
-
 
 
 ctx.translate(x,y);
@@ -391,8 +401,6 @@ ctx.fillStyle =
 this.currentForm.bodyColor;
 
 
-
-// body
 
 ctx.fillRect(
 
@@ -408,9 +416,8 @@ this.currentForm.torsoHeight
 
 
 
-// head
-
 ctx.beginPath();
+
 
 ctx.arc(
 
@@ -426,17 +433,19 @@ Math.PI*2
 
 );
 
+
 ctx.fill();
 
 
-
-// eyes
 
 ctx.fillStyle =
 this.currentForm.eyeColor;
 
 
+
 ctx.beginPath();
+
+
 
 ctx.arc(
 -4,
@@ -446,6 +455,8 @@ ctx.arc(
 Math.PI*2
 );
 
+
+
 ctx.arc(
 4,
 -this.currentForm.torsoHeight/2,
@@ -453,6 +464,7 @@ ctx.arc(
 0,
 Math.PI*2
 );
+
 
 
 ctx.fill();
