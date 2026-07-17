@@ -6,6 +6,7 @@ PROJECT MIMIC
 
 import { World } from "./world.js";
 import { Player } from "./player.js";
+import { Flashlight } from "./flashlight.js";
 
 class Game {
 
@@ -34,6 +35,7 @@ class Game {
 
         this.world = new World();
         this.player = new Player();
+        this.flashlight = new Flashlight();
 
         this.lastTime = performance.now();
 
@@ -81,6 +83,7 @@ class Game {
             this.player.worldY -
             this.canvas.height / 2;
 
+        // Draw World
         this.world.draw(
             this.ctx,
             cameraX,
@@ -89,7 +92,15 @@ class Game {
             this.canvas.height
         );
 
+        // Draw Player
         this.player.draw(
+            this.ctx,
+            this.canvas.width,
+            this.canvas.height
+        );
+
+        // Draw Flashlight Overlay
+        this.flashlight.draw(
             this.ctx,
             this.canvas.width,
             this.canvas.height
